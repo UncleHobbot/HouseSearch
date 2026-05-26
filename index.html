@@ -150,6 +150,24 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .m-dtbl td{padding:5px 9px;border-bottom:1px solid #f0ede8}
 .modal-close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.5);color:#fff;border:none;width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;z-index:1;display:flex;align-items:center;justify-content:center;font-family:inherit}
 .modal-close:hover{background:rgba(0,0,0,.7)}
+/* ── COMPARE TABLE ── */
+.cmp-tbl{width:100%;border-collapse:collapse;background:var(--card);font-size:13px;box-shadow:var(--shadow);border-radius:var(--radius);overflow:hidden}
+.cmp-tbl th.cmp-label{background:#1b4332;color:#fff;padding:10px 14px;text-align:left;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;width:150px;vertical-align:top}
+.cmp-tbl th.cmp-house{background:#2d6a4f;color:#fff;padding:10px 14px;text-align:center;font-weight:700;font-size:14px}
+.cmp-tbl td.cmp-label{background:#f0f9f4;color:var(--text2);padding:8px 14px;font-weight:600;font-size:12px;vertical-align:top;border-bottom:1px solid #e8f5e9;white-space:nowrap}
+.cmp-tbl td.cmp-val{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:top;text-align:left}
+.cmp-tbl tr.cmp-section td,.cmp-tbl tr.cmp-section th{background:#e8f5e9;font-weight:700;color:#1b4332;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:6px 14px;border-bottom:none}
+.cmp-tbl .cmp-photo{width:100%;height:160px;object-fit:cover;display:block;cursor:pointer}
+.cmp-tbl .cmp-photo-ph{height:160px;background:#e8e4de;display:flex;align-items:center;justify-content:center;font-size:40px}
+.cmp-tbl td.cmp-val .sbadge{display:inline-block}
+.cmp-list{padding-left:14px;margin:0;font-size:12px}
+.cmp-list li{margin:2px 0}
+.cmp-adv li{color:#1b4332}
+.cmp-dis li{color:#9c4221}
+.cmp-tbl td.cmp-val .dp-table{margin:0}
+.cmp-highlight{background:#fffbeb}
+.cmp-best{background:#d8f3dc;font-weight:700}
+.cmp-worst{background:#ffd6d6}
 @media(max-width:900px){
   .hdr,.ctrl,.main{padding-left:12px;padding-right:12px}
   .detail-inner{grid-template-columns:1fr 1fr}
@@ -241,6 +259,12 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
     </table>
   </div>
 
+  <!-- COMPARE -->
+  <div class="sec-title sec-toggle" id="cmpTitle">⚖️ Сравнение объектов <span class="cnt" id="cmpCnt"></span></div>
+  <div class="sec-body" id="cmpBody">
+    <div id="cmpWrap"></div>
+  </div>
+
   <!-- CITY COMPARISON -->
   <div class="sec-title sec-toggle collapsed" id="cityTitle">🏙️ Сравнение городов</div>
   <div class="sec-body collapsed" id="cityBody">
@@ -324,6 +348,7 @@ const DATA = [
     "title": "1007 Rue Boulé, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$549,900",
     "priceNum": 549900,
     "city": "Le Vieux-Longueuil (Bellerive), Montérégie",
@@ -378,63 +403,63 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "1,1 × 2,0 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,1 × 2,0 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,4 × 3,7 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,4 × 3,7 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,4 × 2,6 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "2,4 × 2,6 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,7 × 2,6 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,7 × 2,6 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,6 × 3,8 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,6 × 3,8 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,6 × 2,6 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,6 × 2,6 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,5 × 2,8 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "3,5 × 2,8 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Плитка",
+        "dimensions": "3,7 × 4,9 м (~18 м²)",
         "level": "Подвал",
-        "room": "Мастерская",
-        "dimensions": "3,7 × 4,9 м (~18 м²)"
+        "room": "Мастерская"
       },
       {
         "flooring": "Плитка",
+        "dimensions": "2,3 × 2,6 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "2,3 × 2,6 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "—",
+        "dimensions": "1,2 × 2,6 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "1,2 × 2,6 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [],
@@ -443,9 +468,9 @@ const DATA = [
     "additionalInfo": "- Ванная 2 очень узкая (0,7 м шириной) — возможно, туалет-душевая в едином блоке\n- Район Bellerive — вблизи парка Michel-Chartrand",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$549,900"
+        "price": "$549,900",
+        "date": "2026-05"
       }
     ]
   },
@@ -454,6 +479,7 @@ const DATA = [
     "title": "3196 Terrasse Sagard, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$549,900",
     "priceNum": 549900,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -508,69 +534,69 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "1,5 × 1,1 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,5 × 1,1 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Новый паркет",
+        "dimensions": "4,4 × 3,4 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,4 × 3,4 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Новый паркет",
+        "dimensions": "2,5 × 2,6 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "2,5 × 2,6 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Ламинат, кварцевые столешницы",
+        "dimensions": "4,4 × 3,4 м (~15 м²)",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "4,4 × 3,4 м (~15 м²)"
+        "room": "Кухня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,5 × 3,3 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,5 × 3,3 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,5 × 3,3 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "2,5 × 3,3 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,7 × 3,0 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,7 × 3,0 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "0,9 × 5,1 м",
         "level": "Главный этаж",
-        "room": "Коридор",
-        "dimensions": "0,9 × 5,1 м"
+        "room": "Коридор"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,0 × 2,1 м",
         "level": "Подвал",
-        "room": "Гостевой санузел",
-        "dimensions": "1,0 × 2,1 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "3,2 × 3,5 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "3,2 × 3,5 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "1,8 × 3,4 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "1,8 × 3,4 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [
@@ -620,9 +646,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$549,900"
+        "price": "$549,900",
+        "date": "2026-05"
       }
     ]
   },
@@ -631,6 +657,7 @@ const DATA = [
     "title": "1063 Croissant de Parklane, Longueuil (Greenfield Park)",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, reviewing",
+    "compare": false,
     "price": "$599,000",
     "priceNum": 599000,
     "city": "Longueuil – Greenfield Park, Montérégie",
@@ -683,57 +710,57 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Паркет",
+        "dimensions": "4,8 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,8 × 3,5 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,9 × 3,0 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,9 × 3,0 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,2 × 2,4 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,2 × 2,4 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,7 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,7 × 3,5 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,1 × 2,6 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,1 × 2,6 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,7 × 2,8 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "3,7 × 2,8 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,6 × 3,3 м",
         "level": "Подвал",
-        "room": "Спальня 4",
-        "dimensions": "3,6 × 3,3 м"
+        "room": "Спальня 4"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,3 × 1,8 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "3,3 × 1,8 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,1 × 1,9 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "3,1 × 1,9 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [],
@@ -742,9 +769,9 @@ const DATA = [
     "additionalInfo": "- Вкопанный бассейн на тихой полукруговой улице напротив парка\n- 1971 г. постройки — требует проверки кровли и механических систем",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$599,000"
+        "price": "$599,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -752,7 +779,8 @@ const DATA = [
     "mlsId": "18522251",
     "title": "149 Rue Moquin, Longueuil",
     "cityShort": "Longueuil",
-    "tags": "house, reviewing",
+    "tags": "house, reviewing, compare",
+    "compare": true,
     "price": "$479,000",
     "priceNum": 479000,
     "city": "Le Vieux-Longueuil (сектор PMC), Montérégie",
@@ -804,51 +832,51 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "1,4 × 1,0 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,4 × 1,0 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,2 × 4,6 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,2 × 4,6 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,6 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,6 × 3,1 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,0 × 2,9 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,0 × 2,9 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,0 × 1,2 м",
         "level": "Главный этаж",
-        "room": "Гостевой санузел",
-        "dimensions": "2,0 × 1,2 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,2 × 3,9 м",
         "level": "2-й этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,2 × 3,9 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,6 × 2,9 м",
         "level": "2-й этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,6 × 2,9 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,1 × 3,4 м",
         "level": "Подвал",
-        "room": "Спальня 3",
-        "dimensions": "3,1 × 3,4 м"
+        "room": "Спальня 3"
       }
     ],
     "renovations": [],
@@ -857,9 +885,9 @@ const DATA = [
     "additionalInfo": "- Полностью отделанный подвал с 3-й спальней и 2-й ванной\n- Фактическая ширина дома — 4,6 м (15 футов), что типично для таунхауса\n- Никаких данных о недавних ремонтах",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$479,000"
+        "price": "$479,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -867,7 +895,8 @@ const DATA = [
     "mlsId": "19082642",
     "title": "1139Z Rue Gendron, Longueuil",
     "cityShort": "Longueuil",
-    "tags": "house, reviewing",
+    "tags": "house, reviewing, compare",
+    "compare": true,
     "price": "$499,900",
     "priceNum": 499900,
     "city": "Le Vieux-Longueuil (Parcours du Cerf), Montérégie",
@@ -920,51 +949,51 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Ламинат",
+        "dimensions": "4,0 × 3,3 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,0 × 3,3 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,7 × 3,3 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,7 × 3,3 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,4 × 2,8 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,4 × 2,8 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "2,1 × 1,3 м",
         "level": "Главный этаж",
-        "room": "Гостевой санузел",
-        "dimensions": "2,1 × 1,3 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "4,3 × 4,1 м",
         "level": "2-й этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,3 × 4,1 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "4,3 × 2,7 м",
         "level": "2-й этаж",
-        "room": "Спальня 2",
-        "dimensions": "4,3 × 2,7 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат ⚠️",
+        "dimensions": "4,0 × 1,9 м",
         "level": "Подвал",
-        "room": "Спальня 3",
-        "dimensions": "4,0 × 1,9 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,8 × 1,5 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "1,8 × 1,5 м"
+        "room": "Прачечная"
       }
     ],
     "renovations": [
@@ -990,9 +1019,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$499,900"
+        "price": "$499,900",
+        "date": "2026-05"
       }
     ]
   },
@@ -1001,6 +1030,7 @@ const DATA = [
     "title": "133 Rue Casgrain, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$548,000",
     "priceNum": 548000,
     "city": "Le Vieux-Longueuil (сектор PMC), Montérégie",
@@ -1054,45 +1084,45 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Ламинат",
+        "dimensions": "4,5 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,5 × 3,2 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,5 × 3,4 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "2,5 × 3,4 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,5 × 2,5 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "2,5 × 2,5 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,5 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,5 × 3,5 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,5 × 2,3 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,5 × 2,3 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,5 × 2,3 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "3,5 × 2,3 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,3 × 2,9 м",
         "level": "Подвал",
-        "room": "Спальня 4",
-        "dimensions": "3,3 × 2,9 м"
+        "room": "Спальня 4"
       }
     ],
     "renovations": [],
@@ -1101,9 +1131,9 @@ const DATA = [
     "additionalInfo": "- Двор огорожен живой изгородью — хорошая приватность\n- Спокойная улица, рядом автобус до метро Longueuil",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$548,000"
+        "price": "$548,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -1112,6 +1142,7 @@ const DATA = [
     "title": "1085 Rue Balmoral, Longueuil (Saint-Hubert)",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$569,000",
     "priceNum": 569000,
     "city": "Longueuil – Saint-Hubert, Montérégie",
@@ -1164,63 +1195,63 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,4 × 4,2 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,4 × 4,2 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,7 × 3,4 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "2,7 × 3,4 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,7 × 3,4 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "2,7 × 3,4 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,5 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,5 × 3,2 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,9 × 4,1 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "2,9 × 4,1 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,1 × 3,1 м",
         "level": "Подвал",
-        "room": "Спальня 3",
-        "dimensions": "3,1 × 3,1 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,1 × 3,4 м",
         "level": "Подвал",
-        "room": "Спальня 4",
-        "dimensions": "3,1 × 3,4 м"
+        "room": "Спальня 4"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,2 × 3,5 м",
         "level": "Подвал",
-        "room": "Душевая",
-        "dimensions": "1,2 × 3,5 м"
+        "room": "Душевая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,2 × 1,9 м",
         "level": "Подвал",
-        "room": "Гостевой санузел",
-        "dimensions": "1,2 × 1,9 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "1,2 × 2,4 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "1,2 × 2,4 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [
@@ -1242,9 +1273,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$569,000"
+        "price": "$569,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -1253,6 +1284,7 @@ const DATA = [
     "title": "512 Rue Kodiak, Longueuil (Greenfield Park)",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, reviewing",
+    "compare": false,
     "price": "$589,000",
     "priceNum": 589000,
     "city": "Longueuil – Greenfield Park, Montérégie",
@@ -1307,69 +1339,69 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Ламинат",
+        "dimensions": "2,1 × 1,7 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "2,1 × 1,7 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "5,3 × 3,7 м (~20 м²)",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "5,3 × 3,7 м (~20 м²)"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика (ремонт 2021)",
+        "dimensions": "5,3 × 3,6 м (~19 м²)",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "5,3 × 3,6 м (~19 м²)"
+        "room": "Кухня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,8 × 0,9 м",
         "level": "Главный этаж",
-        "room": "Гостевой санузел",
-        "dimensions": "1,8 × 0,9 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,1 × 1,0 м",
         "level": "Главный этаж",
-        "room": "Прихожая 2",
-        "dimensions": "1,1 × 1,0 м"
+        "room": "Прихожая 2"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,8 × 3,1 м",
         "level": "2-й этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,8 × 3,1 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "4,1 × 3,3 м",
         "level": "2-й этаж",
-        "room": "Спальня 2",
-        "dimensions": "4,1 × 3,3 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,2 × 2,7 м",
         "level": "2-й этаж",
-        "room": "Спальня 3",
-        "dimensions": "3,2 × 2,7 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "4,2 × 1,2 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "4,2 × 1,2 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "1,5 × 0,8 м",
         "level": "Подвал",
-        "room": "Кедровый шкаф",
-        "dimensions": "1,5 × 0,8 м"
+        "room": "Кедровый шкаф"
       },
       {
         "flooring": "Линолеум",
+        "dimensions": "4,1 × 1,6 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "4,1 × 1,6 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [
@@ -1391,9 +1423,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$589,000"
+        "price": "$589,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -1402,6 +1434,7 @@ const DATA = [
     "title": "5825 Avenue Maranda, Longueuil (Saint-Hubert)",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$599,000",
     "priceNum": 599000,
     "city": "Longueuil – Saint-Hubert, Montérégie",
@@ -1457,57 +1490,57 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "1,9 × 1,0 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,9 × 1,0 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,4 × 4,7 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,4 × 4,7 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика (кварцевые столешницы)",
+        "dimensions": "3,4 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,4 × 3,1 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,7 × 2,8 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,7 × 2,8 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,9 × 3,7 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,9 × 3,7 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,8 × 3,8 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "2,8 × 3,8 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,2 × 3,8 м",
         "level": "Подвал",
-        "room": "Спальня 3",
-        "dimensions": "3,2 × 3,8 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Линолеум",
+        "dimensions": "2,3 × 3,2 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "2,3 × 3,2 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "2,5 × 3,8 м",
         "level": "Подвал",
-        "room": "Мастерская",
-        "dimensions": "2,5 × 3,8 м"
+        "room": "Мастерская"
       }
     ],
     "renovations": [
@@ -1525,9 +1558,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$599,000"
+        "price": "$599,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -1536,6 +1569,7 @@ const DATA = [
     "title": "1435 Rue Gauthier, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$459,000",
     "priceNum": 459000,
     "city": "Лонгёй — Сент-Юбер",
@@ -1595,9 +1629,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026",
         "event": "Выставлен на продажу",
-        "price": "$459,000"
+        "price": "$459,000",
+        "date": "2026"
       }
     ]
   },
@@ -1606,6 +1640,7 @@ const DATA = [
     "title": "733 Rue Riverin, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$499,900",
     "priceNum": 499900,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -1659,63 +1694,63 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "2,0 × 1,4 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "2,0 × 1,4 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,3 × 4,2 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,3 × 4,2 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,4 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,4 × 3,1 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,4 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,4 × 3,1 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,3 × 4,0 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,3 × 4,0 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,4 × 2,7 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,4 × 2,7 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,7 × 3,0 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,7 × 3,0 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,8 × 3,0 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "2,8 × 3,0 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "Керамика ⚠️",
+        "dimensions": "1,9 × 0,8 м",
         "level": "Подвал",
-        "room": "Гостевой санузел",
-        "dimensions": "1,9 × 0,8 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,6 × 2,2 м",
         "level": "Подвал",
-        "room": "Мастерская",
-        "dimensions": "3,6 × 2,2 м"
+        "room": "Мастерская"
       }
     ],
     "renovations": [],
@@ -1724,9 +1759,9 @@ const DATA = [
     "additionalInfo": "- Кухня обновлена (год не указан) — уточнить\n- Обновлённый интерьер: остров на кухне (упоминается в описании объявления)\n- Рядом с REM — хорошая транспортная доступность\n- Кровля из эластомерной мембраны — долговечный вариант",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$499,900"
+        "price": "$499,900",
+        "date": "2026-05"
       }
     ]
   },
@@ -1734,7 +1769,8 @@ const DATA = [
     "mlsId": "23565904",
     "title": "1824 Rue Grou, Longueuil",
     "cityShort": "Longueuil",
-    "tags": "house, reviewing, longueuil",
+    "tags": "house, reviewing, longueuil, compare",
+    "compare": true,
     "price": "$524,999 (снижена с $539,900)",
     "priceNum": 524999,
     "city": "Longueuil – Le Vieux-Longueuil (Parcours du Cerf)",
@@ -1795,57 +1831,57 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "1,83 × 1,0 м",
         "level": "RDC",
-        "room": "Прихожая",
-        "dimensions": "1,83 × 1,0 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "3,23 × 2,67 м",
         "level": "RDC",
-        "room": "Кухня",
-        "dimensions": "3,23 × 2,67 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "3,20 × 4,60 м",
         "level": "RDC",
-        "room": "Столовая",
-        "dimensions": "3,20 × 4,60 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "4,85 × 3,63 м",
         "level": "RDC",
-        "room": "Гостиная",
-        "dimensions": "4,85 × 3,63 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,55 × 2,41 м",
         "level": "RDC",
-        "room": "Гостевой санузел",
-        "dimensions": "1,55 × 2,41 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "4,14 × 3,61 м (~15 м²)",
         "level": "2-й этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,14 × 3,61 м (~15 м²)"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "3,84 × 3,23 м",
         "level": "2-й этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,84 × 3,23 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "4,10 × 3,23 м",
         "level": "2-й этаж",
-        "room": "Спальня 3",
-        "dimensions": "4,10 × 3,23 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "4,78 × 3,66 м (~17 м²)",
         "level": "Подвал",
-        "room": "Спальня 4",
-        "dimensions": "4,78 × 3,66 м (~17 м²)"
+        "room": "Спальня 4"
       }
     ],
     "renovations": [
@@ -1863,14 +1899,14 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$539,900"
+        "price": "$539,900",
+        "date": "2026-05"
       },
       {
-        "date": "2026-05",
         "event": "Снижена цена",
-        "price": "$524,999"
+        "price": "$524,999",
+        "date": "2026-05"
       }
     ]
   },
@@ -1879,6 +1915,7 @@ const DATA = [
     "title": "1664 Rue De Gaulle, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, рассматривается",
+    "compare": false,
     "price": "$539,000",
     "priceNum": 539000,
     "city": "Longueuil – Saint-Hubert",
@@ -1937,9 +1974,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$539,000"
+        "price": "$539,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -1948,6 +1985,7 @@ const DATA = [
     "title": "3110 Rue Denaut, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$559,000",
     "priceNum": 559000,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -2002,51 +2040,51 @@ const DATA = [
     "rooms": [
       {
         "flooring": "—",
+        "dimensions": "2,9 × 2,4 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "2,9 × 2,4 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Меламин (мебель)",
+        "dimensions": "3,3 × 3,3 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,3 × 3,3 м"
+        "room": "Кухня"
       },
       {
         "flooring": "—",
+        "dimensions": "2,9 × 2,7 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "2,9 × 2,7 м"
+        "room": "Столовая"
       },
       {
         "flooring": "—",
+        "dimensions": "3,2 × 4,3 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,2 × 4,3 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "—",
+        "dimensions": "1,7 × 1,2 м",
         "level": "Главный этаж",
-        "room": "Гостевой санузел",
-        "dimensions": "1,7 × 1,2 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "5,1 × 3,0 м (~15 м²)",
         "level": "2-й этаж",
-        "room": "Главная спальня",
-        "dimensions": "5,1 × 3,0 м (~15 м²)"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,2 × 3,6 м",
         "level": "2-й этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,2 × 3,6 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "2,8 × 3,0 м",
         "level": "2-й этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,8 × 3,0 м"
+        "room": "Спальня 3"
       }
     ],
     "renovations": [
@@ -2064,9 +2102,9 @@ const DATA = [
     "additionalInfo": "- Главная спальня ~15 м² — одна из самых больших в выборке\n- Семейная комната ~41 м² — максимальная в выборке\n- Надземный бассейн включён в продажу\n- Въезд: 6 июля 2026 — фиксированная дата",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$559,000"
+        "price": "$559,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -2075,6 +2113,7 @@ const DATA = [
     "title": "1143 Rue Montgomery, Longueuil (Saint-Hubert)",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$569,000",
     "priceNum": 569000,
     "city": "Longueuil – Saint-Hubert, Montérégie",
@@ -2131,9 +2170,9 @@ const DATA = [
     "additionalInfo": "- Один владелец с 1981 г. — признак хорошего обслуживания\n- Квартира Lafleche, Saint-Hubert — хорошее расположение\n- Нет соседей сзади (полуотдельный, но задний двор изолирован)\n- Въезд 31 июля 2026",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$569,000"
+        "price": "$569,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -2142,6 +2181,7 @@ const DATA = [
     "title": "5215 Rue Delson, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$399,000",
     "priceNum": 399000,
     "city": "Лонгёй — Сент-Юбер",
@@ -2203,9 +2243,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026",
         "event": "Выставлен на продажу",
-        "price": "$399,000"
+        "price": "$399,000",
+        "date": "2026"
       }
     ]
   },
@@ -2214,6 +2254,7 @@ const DATA = [
     "title": "1168 Rue Marmier, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$475,000",
     "priceNum": 475000,
     "city": "Le Vieux-Longueuil (Центральный), Montérégie",
@@ -2269,63 +2310,63 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Ламинат",
+        "dimensions": "3,1 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,1 × 3,2 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,1 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,1 × 3,5 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,9 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,9 × 3,2 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,1 × 4,0 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,1 × 4,0 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Мягкое покрытие",
+        "dimensions": "2,7 × 1,4 м",
         "level": "Главный этаж",
-        "room": "Прачечная",
-        "dimensions": "2,7 × 1,4 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,9 × 3,1 м",
         "level": "Подвал",
-        "room": "Спальня",
-        "dimensions": "2,9 × 3,1 м"
+        "room": "Спальня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,1 × 2,8 м",
         "level": "Подвал",
-        "room": "Спальня",
-        "dimensions": "3,1 × 2,8 м"
+        "room": "Спальня"
       },
       {
         "flooring": "Мягкое покрытие",
+        "dimensions": "3,3 × 3,5 м",
         "level": "Подвал",
-        "room": "Кухня",
-        "dimensions": "3,3 × 3,5 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Мягкое покрытие",
+        "dimensions": "2,6 × 1,8 м",
         "level": "Подвал",
-        "room": "Гостевой санузел",
-        "dimensions": "2,6 × 1,8 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "0,9 × 1,2 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "0,9 × 1,2 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [],
@@ -2334,9 +2375,9 @@ const DATA = [
     "additionalInfo": "- Кухня в подвале оснащена мебелью в стиле «меламин»\n- В заднем дворе: патио и сарай\n- Ремонт производился в 1980-х гг.; дом готов к косметическому обновлению\n- Парковка: улица (собственной парковки нет — уточнить на месте)",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$475,000"
+        "price": "$475,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -2345,6 +2386,7 @@ const DATA = [
     "title": "4795 Rue Quevillon, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$489,900",
     "priceNum": 489900,
     "city": "Лонгёй — Сент-Юбер",
@@ -2405,9 +2447,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026",
         "event": "Выставлен на продажу",
-        "price": "$489,900"
+        "price": "$489,900",
+        "date": "2026"
       }
     ]
   },
@@ -2416,6 +2458,7 @@ const DATA = [
     "title": "572 Rue Patricia, Greenfield Park",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, reviewing",
+    "compare": false,
     "price": "$499,000",
     "priceNum": 499000,
     "city": "Longueuil – Greenfield Park",
@@ -2455,9 +2498,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "Май 2026",
         "event": "Выставлен на продажу",
-        "price": "$499,000"
+        "price": "$499,000",
+        "date": "Май 2026"
       }
     ]
   },
@@ -2466,6 +2509,7 @@ const DATA = [
     "title": "2759 Rue Préfontaine, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$499,000",
     "priceNum": 499000,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -2525,9 +2569,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$499,000"
+        "price": "$499,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -2536,6 +2580,7 @@ const DATA = [
     "title": "5550 Avenue Grenier, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$500,900",
     "priceNum": 500900,
     "city": "Лонгёй — Сент-Юбер",
@@ -2597,9 +2642,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026",
         "event": "Выставлен на продажу",
-        "price": "$500,900"
+        "price": "$500,900",
+        "date": "2026"
       }
     ]
   },
@@ -2608,6 +2653,7 @@ const DATA = [
     "title": "2978 Rue de Courcelette, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$525,000",
     "priceNum": 525000,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -2661,51 +2707,51 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "1,8 × 1,3 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,8 × 1,3 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,0 × 3,3 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,0 × 3,3 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,5 × 2,6 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,5 × 2,6 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "2,9 × 2,5 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "2,9 × 2,5 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,9 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,9 × 3,5 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,8 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "2,8 × 3,1 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,9 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,9 × 3,1 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,4 × 1,5 м",
         "level": "Подвал",
-        "room": "Гостевой санузел",
-        "dimensions": "1,4 × 1,5 м"
+        "room": "Гостевой санузел"
       }
     ],
     "renovations": [],
@@ -2714,9 +2760,9 @@ const DATA = [
     "additionalInfo": "- Несмотря на оценку 3/10 (из-за цены), дом имеет **значительно лучший подвал**, чем казалось изначально\n- Принудительная вентиляция с отоплением эффективнее электрических плинтусов\n- Кровля из эластомерной мембраны — высококачественная\n- Нет гаража и только 1 ванная комната на главном этаже — остаются недостатками",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$525,000"
+        "price": "$525,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -2725,6 +2771,7 @@ const DATA = [
     "title": "6140 Avenue Brunet, Longueuil (Saint-Hubert)",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$528,000",
     "priceNum": 528000,
     "city": "Longueuil – Saint-Hubert, Montérégie",
@@ -2778,57 +2825,57 @@ const DATA = [
     "rooms": [
       {
         "flooring": "—",
+        "dimensions": "4,1 × 4,1 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,1 × 4,1 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "—",
+        "dimensions": "2,9 × 2,4 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "2,9 × 2,4 м"
+        "room": "Столовая"
       },
       {
         "flooring": "—",
+        "dimensions": "2,9 × 2,9 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "2,9 × 2,9 м"
+        "room": "Кухня"
       },
       {
         "flooring": "—",
+        "dimensions": "4,0 × 3,4 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,0 × 3,4 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "—",
+        "dimensions": "3,6 × 3,0 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,6 × 3,0 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "—",
+        "dimensions": "3,9 × 3,4 м",
         "level": "Подвал",
-        "room": "Спальня 3",
-        "dimensions": "3,9 × 3,4 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "—",
+        "dimensions": "3,3 × 3,8 м",
         "level": "Подвал",
-        "room": "Спальня 4",
-        "dimensions": "3,3 × 3,8 м"
+        "room": "Спальня 4"
       },
       {
         "flooring": "—",
+        "dimensions": "1,1 × 2,1 м",
         "level": "Подвал",
-        "room": "Кабинет",
-        "dimensions": "1,1 × 2,1 м"
+        "room": "Кабинет"
       },
       {
         "flooring": "—",
+        "dimensions": "2,3 × 3,4 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "2,3 × 3,4 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [],
@@ -2837,9 +2884,9 @@ const DATA = [
     "additionalInfo": "- Прямой выход из кухни во двор — упомянут в листинге\n- Электроэнергия ~$3,101/год — вероятно, электрическое отопление\n- Обновлённая ванная упоминается в листинге",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$528,000"
+        "price": "$528,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -2848,6 +2895,7 @@ const DATA = [
     "title": "5110 Rue Michel, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, рассматривается",
+    "compare": false,
     "price": "$548,000",
     "priceNum": 548000,
     "city": "Longueuil – Saint-Hubert",
@@ -2906,9 +2954,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$548,000"
+        "price": "$548,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -2917,6 +2965,7 @@ const DATA = [
     "title": "1093 Boul. Roberval Est, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$549,000",
     "priceNum": 549000,
     "city": "Le Vieux-Longueuil (Pierre Boucher), Montérégie",
@@ -2971,51 +3020,51 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,4 × 4,6 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,4 × 4,6 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,9 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,9 × 3,2 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "2,2 × 4,3 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "2,2 × 4,3 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,0 × 1,6 м",
         "level": "Главный этаж",
-        "room": "Гостевой санузел",
-        "dimensions": "1,0 × 1,6 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "4,0 × 3,4 м",
         "level": "2-й этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,0 × 3,4 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "1,5 × 1,8 м",
         "level": "2-й этаж",
-        "room": "Гардеробная (walk-in)",
-        "dimensions": "1,5 × 1,8 м"
+        "room": "Гардеробная (walk-in)"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,7 × 3,8 м",
         "level": "2-й этаж",
-        "room": "Спальня 2",
-        "dimensions": "2,7 × 3,8 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,8 × 2,9 м",
         "level": "2-й этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,8 × 2,9 м"
+        "room": "Спальня 3"
       }
     ],
     "renovations": [],
@@ -3024,9 +3073,9 @@ const DATA = [
     "additionalInfo": "- Зарядное устройство Tesla было установлено, но не включено — подтверждает класс покупателей\n- Кухня 2,2 × 4,3 м = достаточно узкая для кухни-галереи\n- Подвал лишь частично отделан (кабинет с бетонным полом)\n- 1997 год — новейшая постройка в наборе",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$549,000"
+        "price": "$549,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -3035,6 +3084,7 @@ const DATA = [
     "title": "1934 Rue Montcalm, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, рассматривается",
+    "compare": false,
     "price": "$559,000",
     "priceNum": 559000,
     "city": "Longueuil – Saint-Hubert",
@@ -3093,9 +3143,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$559,000"
+        "price": "$559,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -3104,6 +3154,7 @@ const DATA = [
     "title": "2530 Rue Dollard, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$474,900",
     "priceNum": 474900,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -3158,69 +3209,69 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,1 × 2,8 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,1 × 2,8 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,1 × 2,8 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "4,1 × 2,8 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,4 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,4 × 3,2 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,9 × 1,1 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,9 × 1,1 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,5 × 1,9 м",
         "level": "Главный этаж",
-        "room": "Коридор",
-        "dimensions": "3,5 × 1,9 м"
+        "room": "Коридор"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,0 × 2,8 м",
         "level": "Подвал",
-        "room": "Спальня",
-        "dimensions": "3,0 × 2,8 м"
+        "room": "Спальня"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "4,7 × 3,1 м",
         "level": "Подвал",
-        "room": "Спальня",
-        "dimensions": "4,7 × 3,1 м"
+        "room": "Спальня"
       },
       {
         "flooring": "Линолеум",
+        "dimensions": "3,2 × 1,5 м",
         "level": "Подвал",
-        "room": "Гостевой санузел",
-        "dimensions": "3,2 × 1,5 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "3,2 × 2,8 м",
         "level": "Подвал",
-        "room": "Механическая",
-        "dimensions": "3,2 × 2,8 м"
+        "room": "Механическая"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "1,1 × 0,9 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "1,1 × 0,9 м"
+        "room": "Кладовая"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "1,9 × 1,1 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "1,9 × 1,1 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [
@@ -3254,9 +3305,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$474,900"
+        "price": "$474,900",
+        "date": "2026-05"
       }
     ]
   },
@@ -3265,6 +3316,7 @@ const DATA = [
     "title": "3524 Rue Rigaud, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$475,000",
     "priceNum": 475000,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -3320,9 +3372,9 @@ const DATA = [
     "additionalInfo": "- **Брокер**: Annie Cossette, GROUPE SUTTON-ACTUEL INC. (+1 450-443-2331)\n- Таунхаус в ряду — уточнить, сколько соседей и состояние общего имущества\n- Ожидание въезда: 123 дня (~сентябрь 2026)",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$475,000"
+        "price": "$475,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -3331,6 +3383,7 @@ const DATA = [
     "title": "5405 Rue Hubert-Guertin, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$495,000",
     "priceNum": 495000,
     "city": "Лонгёй — Сент-Юбер",
@@ -3387,9 +3440,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026",
         "event": "Выставлен на продажу",
-        "price": "$495,000"
+        "price": "$495,000",
+        "date": "2026"
       }
     ]
   },
@@ -3398,6 +3451,7 @@ const DATA = [
     "title": "3401 Rue Ramezay, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$529,900",
     "priceNum": 529900,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -3452,57 +3506,57 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "2,1 × 1,2 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "2,1 × 1,2 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,2 × 4,6 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,2 × 4,6 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "6,1 × 2,9 м (~18 м²)",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "6,1 × 2,9 м (~18 м²)"
+        "room": "Кухня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "4,3 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,3 × 3,1 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,4 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "2,4 × 3,1 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,0 × 2,9 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "3,0 × 2,9 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "2,9 × 2,5 м",
         "level": "Подвал",
-        "room": "Столовая",
-        "dimensions": "2,9 × 2,5 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "2,8 × 1,9 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "2,8 × 1,9 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "1,8 × 2,7 м",
         "level": "Подвал",
-        "room": "Холодный погреб",
-        "dimensions": "1,8 × 2,7 м"
+        "room": "Холодный погреб"
       }
     ],
     "renovations": [],
@@ -3511,9 +3565,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$529,900"
+        "price": "$529,900",
+        "date": "2026-05"
       }
     ]
   },
@@ -3522,6 +3576,7 @@ const DATA = [
     "title": "1954 Rue Cartier, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, reviewing",
+    "compare": false,
     "price": "$549,000",
     "priceNum": 549000,
     "city": "Le Vieux-Longueuil (центральный), Montérégie",
@@ -3576,63 +3631,63 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Паркет",
+        "dimensions": "3,8 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,8 × 3,2 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "ПВХ",
+        "dimensions": "3,4 × 6,4 м (~22 м²)",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,4 × 6,4 м (~22 м²)"
+        "room": "Кухня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,7 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,7 × 3,2 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,4 × 3,0 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,4 × 3,0 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "3,2 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "3,2 × 3,1 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "ПВХ",
+        "dimensions": "3,7 × 3,6 м",
         "level": "Подвал (2024)",
-        "room": "Спальня 4",
-        "dimensions": "3,7 × 3,6 м"
+        "room": "Спальня 4"
       },
       {
         "flooring": "ПВХ",
+        "dimensions": "3,7 × 3,7 м",
         "level": "Подвал (2024)",
-        "room": "Спальня 5",
-        "dimensions": "3,7 × 3,7 м"
+        "room": "Спальня 5"
       },
       {
         "flooring": "ПВХ",
+        "dimensions": "2,3 × 3,8 м",
         "level": "Подвал (2024)",
-        "room": "Спальня 6",
-        "dimensions": "2,3 × 3,8 м"
+        "room": "Спальня 6"
       },
       {
         "flooring": "Розетки установлены ⚠️",
+        "dimensions": "3,9 × 4,0 м",
         "level": "Подвал",
-        "room": "Кухня (незаконченная)",
-        "dimensions": "3,9 × 4,0 м"
+        "room": "Кухня (незаконченная)"
       },
       {
         "flooring": "ПВХ",
+        "dimensions": "1,6 × 1,9 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "1,6 × 1,9 м"
+        "room": "Прачечная"
       }
     ],
     "renovations": [
@@ -3654,9 +3709,9 @@ const DATA = [
     "additionalInfo": "- Кухня в подвале НЕ готова: установлены только розетки — оценить стоимость завершения\n- Рядом метро Longueuil–Université-de-Sherbrooke",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$549,000"
+        "price": "$549,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -3665,6 +3720,7 @@ const DATA = [
     "title": "3190 Montée St-Hubert, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, reviewing",
+    "compare": false,
     "price": "$449,000",
     "priceNum": 449000,
     "city": "Лонгёй — Сент-Юбер",
@@ -3721,9 +3777,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026",
         "event": "Выставлен на продажу",
-        "price": "$449,000"
+        "price": "$449,000",
+        "date": "2026"
       }
     ]
   },
@@ -3732,6 +3788,7 @@ const DATA = [
     "title": "1109 Rue Dominion, Longueuil (Greenfield Park)",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, reviewing",
+    "compare": false,
     "price": "$455,000",
     "priceNum": 455000,
     "city": "Longueuil – Greenfield Park, Montérégie",
@@ -3792,9 +3849,9 @@ const DATA = [
     "additionalInfo": "- Рядом парк, общественный транспорт и школа Centennial\n- Одно из самых дешёвых предложений в Greenfield Park\n- Двор «требует разработки» — дополнительные возможности",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$455,000"
+        "price": "$455,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -3803,6 +3860,7 @@ const DATA = [
     "title": "5325 Rue Bernier, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, отклонено",
+    "compare": false,
     "price": "$535,000",
     "priceNum": 535000,
     "city": "Longueuil – Saint-Hubert",
@@ -3861,9 +3919,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$535,000"
+        "price": "$535,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -3872,6 +3930,7 @@ const DATA = [
     "title": "1133 Rue Hart, Greenfield Park",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, rejected",
+    "compare": false,
     "price": "$424,500",
     "priceNum": 424500,
     "city": "Longueuil – Greenfield Park",
@@ -3911,9 +3970,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "Май 2026",
         "event": "Выставлен на продажу",
-        "price": "$424,500"
+        "price": "$424,500",
+        "date": "Май 2026"
       }
     ]
   },
@@ -3922,6 +3981,7 @@ const DATA = [
     "title": "1121 Rue Hart, Greenfield Park",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, rejected",
+    "compare": false,
     "price": "$424,999",
     "priceNum": 424999,
     "city": "Longueuil – Greenfield Park",
@@ -3961,9 +4021,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "Май 2026",
         "event": "Выставлен на продажу",
-        "price": "$424,999"
+        "price": "$424,999",
+        "date": "Май 2026"
       }
     ]
   },
@@ -3972,6 +4032,7 @@ const DATA = [
     "title": "12Z Rue Marchand, Saint-Constant",
     "cityShort": "Saint-Constant",
     "tags": "house, saint-constant, reviewing",
+    "compare": false,
     "price": "$449,000",
     "priceNum": 449000,
     "city": "Saint-Constant, Montérégie",
@@ -4030,9 +4091,9 @@ const DATA = [
     "additionalInfo": "- **Уникальное в выборке**: Цена ($449K) НИЖЕ муниципальной оценки ($455,400) — 99%\n- Рядом со школами, парками, магазинами, шоссе 30, электричкой exo",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$449,000"
+        "price": "$449,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -4041,6 +4102,7 @@ const DATA = [
     "title": "881 Rue Cummings, Greenfield Park",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, rejected",
+    "compare": false,
     "price": "$449,800",
     "priceNum": 449800,
     "city": "Longueuil – Greenfield Park",
@@ -4080,9 +4142,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "Май 2026",
         "event": "Выставлен на продажу",
-        "price": "$449,800"
+        "price": "$449,800",
+        "date": "Май 2026"
       }
     ]
   },
@@ -4091,6 +4153,7 @@ const DATA = [
     "title": "2693 Rue Préfontaine, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, rejected",
+    "compare": false,
     "price": "$475,000",
     "priceNum": 475000,
     "city": "Le Vieux-Longueuil (Nobert South), Montérégie",
@@ -4143,45 +4206,45 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Ламинат",
+        "dimensions": "3,4 × 5,1 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,4 × 5,1 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,2 × 4,3 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,2 × 4,3 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,9 × 3,0 м",
         "level": "Главный этаж",
-        "room": "Спальня 1",
-        "dimensions": "2,9 × 3,0 м"
+        "room": "Спальня 1"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,1 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,1 × 3,5 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Бетон ⚠️",
+        "dimensions": "2,5 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,5 × 3,2 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "1,0 × 7,0 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,0 × 7,0 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "6,5 × 7,7 м",
         "level": "2-й этаж",
-        "room": "Спальня 4",
-        "dimensions": "6,5 × 7,7 м"
+        "room": "Спальня 4"
       }
     ],
     "renovations": [],
@@ -4190,9 +4253,9 @@ const DATA = [
     "additionalInfo": "- Недавно покрашен, в отличном состоянии\n- Семейная комната в подвале: большое пространство (36 м²), но бетонный пол\n- Кровля усилена эластомерной мембраной — хорошее состояние",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$475,000"
+        "price": "$475,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -4201,6 +4264,7 @@ const DATA = [
     "title": "1260 Rue Centrale, Sainte-Catherine",
     "cityShort": "Sainte-Catherine",
     "tags": "house, sainte-catherine, rejected",
+    "compare": false,
     "price": "$499,000",
     "priceNum": 499000,
     "city": "Sainte-Catherine, Montérégie",
@@ -4256,45 +4320,45 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Линолеум",
+        "dimensions": "1,0 × 0,9 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,0 × 0,9 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Паркет",
+        "dimensions": "4,5 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,5 × 3,5 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "5,3 × 3,5 м (~18 м²)",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "5,3 × 3,5 м (~18 м²)"
+        "room": "Кухня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "4,1 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "4,1 × 3,5 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,0 × 2,8 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,0 × 2,8 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Линолеум",
+        "dimensions": "2,5 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,5 × 3,5 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "—",
+        "dimensions": "10,7 × 6,9 м (~74 м²)",
         "level": "Подвал",
-        "room": "Полуотделанный подвал",
-        "dimensions": "10,7 × 6,9 м (~74 м²)"
+        "room": "Полуотделанный подвал"
       }
     ],
     "renovations": [],
@@ -4303,9 +4367,9 @@ const DATA = [
     "additionalInfo": "- Крытая бетонная терраса во дворе\n- Огороженный участок 828 м² — самый большой во всей выборке\n- Полуотделанный подвал 74 м² — потребует инвестиций, но значительный потенциал\n- Оценочная стоимость строения всего $81,400 (из $467,700 оценки) — старое здание, требует проверки всех систем",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$499,000"
+        "price": "$499,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -4314,6 +4378,7 @@ const DATA = [
     "title": "332 Rue Pépin, Longueuil",
     "cityShort": "Longueuil",
     "tags": "house, rejected",
+    "compare": false,
     "price": "$499,900",
     "priceNum": 499900,
     "city": "Le Vieux-Longueuil (сектор PMC), Montérégie",
@@ -4368,57 +4433,57 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "1,0 × 1,3 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,0 × 1,3 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,7 × 4,6 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,7 × 4,6 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Мягкое покрытие",
+        "dimensions": "2,4 × 3,0 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "2,4 × 3,0 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Мягкое покрытие",
+        "dimensions": "2,7 × 3,0 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "2,7 × 3,0 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,2 × 4,5 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,2 × 4,5 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,3 × 3,2 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,3 × 3,2 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "2,6 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,6 × 3,1 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "4,6 × 2,2 м (нерег.)",
         "level": "Подвал",
-        "room": "Мастерская",
-        "dimensions": "4,6 × 2,2 м (нерег.)"
+        "room": "Мастерская"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "2,6 × 5,4 м",
         "level": "Подвал",
-        "room": "Прачечная/Кладовая",
-        "dimensions": "2,6 × 5,4 м"
+        "room": "Прачечная/Кладовая"
       }
     ],
     "renovations": [
@@ -4436,9 +4501,9 @@ const DATA = [
     "additionalInfo": "- Семейная комната в подвале ~35 м² — одна из самых больших в этой выборке\n- Мастерская в подвале — дополнительное пространство\n- Кровля не указана — уточнить возраст при просмотре",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$499,900"
+        "price": "$499,900",
+        "date": "2026-05"
       }
     ]
   },
@@ -4447,6 +4512,7 @@ const DATA = [
     "title": "815 Rue Golbourn, Greenfield Park",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, rejected",
+    "compare": false,
     "price": "$528,000",
     "priceNum": 528000,
     "city": "Longueuil – Greenfield Park",
@@ -4486,9 +4552,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "Май 2026",
         "event": "Выставлен на продажу",
-        "price": "$528,000"
+        "price": "$528,000",
+        "date": "Май 2026"
       }
     ]
   },
@@ -4497,6 +4563,7 @@ const DATA = [
     "title": "956 Rue Jude, Greenfield Park",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, rejected",
+    "compare": false,
     "price": "$528,900",
     "priceNum": 528900,
     "city": "Longueuil – Greenfield Park",
@@ -4536,9 +4603,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "Май 2026",
         "event": "Выставлен на продажу",
-        "price": "$528,900"
+        "price": "$528,900",
+        "date": "Май 2026"
       }
     ]
   },
@@ -4547,6 +4614,7 @@ const DATA = [
     "title": "815 Croissant La Bolduc, Sainte-Catherine",
     "cityShort": "Sainte-Catherine",
     "tags": "house, sainte-catherine, reviewing",
+    "compare": false,
     "price": "$549,000",
     "priceNum": 549000,
     "city": "Sainte-Catherine, Montérégie",
@@ -4600,51 +4668,51 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "1,9 × 1,4 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "1,9 × 1,4 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,3 × 5,5 м (~18 м²)",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "3,3 × 5,5 м (~18 м²)"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "2,9 × 4,3 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "2,9 × 4,3 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,8 × 2,6 м",
         "level": "Главный этаж",
-        "room": "Столовый угол",
-        "dimensions": "1,8 × 2,6 м"
+        "room": "Столовый угол"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,6 × 1,6 м",
         "level": "Главный этаж",
-        "room": "Гостевой санузел",
-        "dimensions": "1,6 × 1,6 м"
+        "room": "Гостевой санузел"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,8 × 3,9 м",
         "level": "2-й этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,8 × 3,9 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Твёрдое дерево",
+        "dimensions": "3,8 × 3,3 м",
         "level": "2-й этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,8 × 3,3 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "4,3 × 2,5 м",
         "level": "Подвал",
-        "room": "Спальня 3",
-        "dimensions": "4,3 × 2,5 м"
+        "room": "Спальня 3"
       }
     ],
     "renovations": [],
@@ -4653,9 +4721,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$549,000"
+        "price": "$549,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -4664,6 +4732,7 @@ const DATA = [
     "title": "951 Rue du Centenaire, Greenfield Park",
     "cityShort": "Greenfield Park",
     "tags": "house, greenfield-park, rejected",
+    "compare": false,
     "price": "$549,000",
     "priceNum": 549000,
     "city": "Longueuil – Greenfield Park",
@@ -4703,9 +4772,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "Май 2026",
         "event": "Выставлен на продажу",
-        "price": "$549,000"
+        "price": "$549,000",
+        "date": "Май 2026"
       }
     ]
   },
@@ -4714,6 +4783,7 @@ const DATA = [
     "title": "4868 Rue Philippe-Parizeau, Saint-Hubert",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, rejected",
+    "compare": false,
     "price": "$549,000",
     "priceNum": 549000,
     "city": "Longueuil – Saint-Hubert",
@@ -4775,81 +4845,81 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "3,4 × 2,8 м",
         "level": "Главный",
-        "room": "Прихожая",
-        "dimensions": "3,4 × 2,8 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,6 × 3,5 м",
         "level": "Главный",
-        "room": "Столовая",
-        "dimensions": "3,6 × 3,5 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,5 × 5,8 м (~20 м²)",
         "level": "Главный",
-        "room": "Кухня",
-        "dimensions": "3,5 × 5,8 м (~20 м²)"
+        "room": "Кухня"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "3,6 × 3,6 м",
         "level": "Главный",
-        "room": "Мастер-спальня",
-        "dimensions": "3,6 × 3,6 м"
+        "room": "Мастер-спальня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "2,2 × 3,7 м",
         "level": "Главный",
-        "room": "Мастер-ванная",
-        "dimensions": "2,2 × 3,7 м"
+        "room": "Мастер-ванная"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "4,4 × 6,9 м (~30 м²)",
         "level": "Мезонин",
-        "room": "Гостиная",
-        "dimensions": "4,4 × 6,9 м (~30 м²)"
+        "room": "Гостиная"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "3,5 × 2,9 м",
         "level": "Нижний",
-        "room": "Спальня 2",
-        "dimensions": "3,5 × 2,9 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "2,7 × 3,0 м",
         "level": "Нижний",
-        "room": "Спальня 3",
-        "dimensions": "2,7 × 3,0 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "1,9 × 1,5 м",
         "level": "Нижний",
-        "room": "Ванная 2",
-        "dimensions": "1,9 × 1,5 м"
+        "room": "Ванная 2"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "3,5 × 3,5 м",
         "level": "Подвал",
-        "room": "Спальня 4",
-        "dimensions": "3,5 × 3,5 м"
+        "room": "Спальня 4"
       },
       {
         "flooring": "Мягкое покрытие",
+        "dimensions": "1,9 × 2,2 м",
         "level": "Подвал",
-        "room": "Ванная 3",
-        "dimensions": "1,9 × 2,2 м"
+        "room": "Ванная 3"
       },
       {
         "flooring": "Мягкое покрытие",
+        "dimensions": "3,2 × 1,9 м",
         "level": "Подвал",
-        "room": "Прачечная",
-        "dimensions": "3,2 × 1,9 м"
+        "room": "Прачечная"
       },
       {
         "flooring": "Бетон ⚠️ (потолок 1,35 м — не жилое)",
+        "dimensions": "4,2 × 8,9 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "4,2 × 8,9 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [],
@@ -4858,9 +4928,9 @@ const DATA = [
     "additionalInfo": "",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$549,000"
+        "price": "$549,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -4869,6 +4939,7 @@ const DATA = [
     "title": "3740 Rue Edgar, Longueuil (Saint-Hubert)",
     "cityShort": "Saint-Hubert",
     "tags": "house, saint-hubert, rejected",
+    "compare": false,
     "price": "$588,000",
     "priceNum": 588000,
     "city": "Longueuil – Saint-Hubert (сектор Laflèche), Montérégie",
@@ -4922,57 +4993,57 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Ламинат",
+        "dimensions": "4,5 × 3,3 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,5 × 3,3 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,3 × 2,7 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,3 × 2,7 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,3 × 2,9 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,3 × 2,9 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "3,7 × 3,1 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,7 × 3,1 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,8 × 2,7 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "2,8 × 2,7 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ламинат",
+        "dimensions": "2,8 × 2,5 м",
         "level": "Главный этаж",
-        "room": "Спальня 3",
-        "dimensions": "2,8 × 2,5 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Мягкое покрытие",
+        "dimensions": "3,4 × 3,4 м",
         "level": "Подвал",
-        "room": "Спальня 4",
-        "dimensions": "3,4 × 3,4 м"
+        "room": "Спальня 4"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "3,3 × 2,3 м",
         "level": "Подвал",
-        "room": "Мастерская",
-        "dimensions": "3,3 × 2,3 м"
+        "room": "Мастерская"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "4,9 × 3,4 м",
         "level": "Подвал",
-        "room": "Кладовая",
-        "dimensions": "4,9 × 3,4 м"
+        "room": "Кладовая"
       }
     ],
     "renovations": [],
@@ -4981,9 +5052,9 @@ const DATA = [
     "additionalInfo": "- Кладовая 4,9 × 3,4 м ≈ 17 м² — значительное хранилище\n- Сектор Laflèche — престижный район Saint-Hubert\n- Рядом REM, метро Longueuil, больница, торговый центр Promenades Saint-Bruno",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$588,000"
+        "price": "$588,000",
+        "date": "2026-05"
       }
     ]
   },
@@ -4992,6 +5063,7 @@ const DATA = [
     "title": "30 Rue Verdun, Saint-Constant",
     "cityShort": "Saint-Constant",
     "tags": "house, saint-constant, reviewing",
+    "compare": false,
     "price": "$600,000",
     "priceNum": 600000,
     "city": "Saint-Constant, Montérégie",
@@ -5049,57 +5121,57 @@ const DATA = [
     "rooms": [
       {
         "flooring": "Керамика",
+        "dimensions": "2,0 × 2,0 м",
         "level": "Главный этаж",
-        "room": "Прихожая",
-        "dimensions": "2,0 × 2,0 м"
+        "room": "Прихожая"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "4,8 × 4,1 м",
         "level": "Главный этаж",
-        "room": "Гостиная",
-        "dimensions": "4,8 × 4,1 м"
+        "room": "Гостиная"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "3,7 × 3,6 м",
         "level": "Главный этаж",
-        "room": "Столовая",
-        "dimensions": "3,7 × 3,6 м"
+        "room": "Столовая"
       },
       {
         "flooring": "Керамика",
+        "dimensions": "3,4 × 2,9 м",
         "level": "Главный этаж",
-        "room": "Кухня",
-        "dimensions": "3,4 × 2,9 м"
+        "room": "Кухня"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "3,9 × 3,5 м",
         "level": "Главный этаж",
-        "room": "Главная спальня",
-        "dimensions": "3,9 × 3,5 м"
+        "room": "Главная спальня"
       },
       {
         "flooring": "Дерево",
+        "dimensions": "3,2 × 3,3 м",
         "level": "Главный этаж",
-        "room": "Спальня 2",
-        "dimensions": "3,2 × 3,3 м"
+        "room": "Спальня 2"
       },
       {
         "flooring": "Ковровое покрытие",
+        "dimensions": "3,7 × 4,1 м",
         "level": "Подвал",
-        "room": "Спальня 3",
-        "dimensions": "3,7 × 4,1 м"
+        "room": "Спальня 3"
       },
       {
         "flooring": "Керамика (высота 6 ф)",
+        "dimensions": "2,8 × 4,0 м",
         "level": "Подвал",
-        "room": "Кладовая 1",
-        "dimensions": "2,8 × 4,0 м"
+        "room": "Кладовая 1"
       },
       {
         "flooring": "Бетон",
+        "dimensions": "1,8 × 1,8 м",
         "level": "Подвал",
-        "room": "Кладовая 2",
-        "dimensions": "1,8 × 1,8 м"
+        "room": "Кладовая 2"
       }
     ],
     "renovations": [],
@@ -5108,9 +5180,9 @@ const DATA = [
     "additionalInfo": "- Соборный потолок (упоминается в листинге)\n- Газовый камин в большой семейной комнате",
     "priceHistory": [
       {
-        "date": "2026-05",
         "event": "Выставлен на продажу",
-        "price": "$600,000"
+        "price": "$600,000",
+        "date": "2026-05"
       }
     ]
   }
@@ -5431,6 +5503,180 @@ function openModal(mlsId){
   document.getElementById('modal').scrollTop=0;
 }
 
+/* ── compare section ── */
+function renderCompare(){
+  const houses=DATA.filter(h=>h.compare);
+  const cnt=document.getElementById('cmpCnt');
+  if(cnt)cnt.textContent=houses.length;
+  if(!houses.length){document.getElementById('cmpWrap').innerHTML='<p style="padding:16px;color:var(--text2);font-size:13px">Нет объектов с тегом «compare».</p>';return;}
+
+  const n=houses.length;
+
+  /* helper: highlight best/worst numeric values in a row */
+  function markBest(vals,higher){
+    const nums=vals.map(v=>parseFloat(String(v||'').replace(/[^0-9.]/g,'')));
+    if(nums.every(x=>isNaN(x)))return vals.map(v=>({v,cls:''}));
+    const valid=nums.filter(x=>!isNaN(x));
+    const best=higher?Math.max(...valid):Math.min(...valid);
+    const worst=higher?Math.min(...valid):Math.max(...valid);
+    return vals.map((v,i)=>{
+      if(isNaN(nums[i]))return{v,cls:''};
+      if(nums[i]===best&&valid.length>1)return{v,cls:'cmp-best'};
+      if(nums[i]===worst&&valid.length>1)return{v,cls:'cmp-worst'};
+      return{v,cls:''};
+    });
+  }
+
+  function row(label,vals,higher){
+    const marked=higher!==undefined?markBest(vals,higher):vals.map(v=>({v,cls:''}));
+    return '<tr><td class="cmp-label">'+esc(label)+'</td>'
+      +marked.map(({v,cls})=>'<td class="cmp-val'+(cls?' '+cls:'')+'">'+(v||'<span style="color:#bbb">—</span>')+'</td>').join('')
+      +'</tr>';
+  }
+
+  function sectionRow(label){
+    return '<tr class="cmp-section"><td colspan="'+(n+1)+'">'+label+'</td></tr>';
+  }
+
+  function listRow(label,arrGetter,cls){
+    return '<tr><td class="cmp-label">'+esc(label)+'</td>'
+      +houses.map(h=>{
+        const items=toArr(arrGetter(h));
+        return '<td class="cmp-val">'+(items.length?'<ul class="cmp-list'+( cls?' '+cls:'')+'">'+items.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ul>':'<span style="color:#bbb">—</span>')+'</td>';
+      }).join('')
+      +'</tr>';
+  }
+
+  function tableRow(label,getter){
+    return '<tr><td class="cmp-label">'+esc(label)+'</td>'
+      +houses.map(h=>{
+        const tbl=getter(h);
+        return '<td class="cmp-val">'+(tbl||'<span style="color:#bbb">—</span>')+'</td>';
+      }).join('')
+      +'</tr>';
+  }
+
+  let html='<div style="overflow-x:auto"><table class="cmp-tbl">';
+
+  /* header with house names */
+  html+='<thead><tr><th class="cmp-label"></th>'
+    +houses.map(h=>'<th class="cmp-house"><a href="'+esc(h.centrisUrl)+'" target="_blank" style="color:#fff">'+esc(h.title)+'</a><br><span style="font-size:12px;opacity:.85">'+esc(h.price)+'</span></th>').join('')
+    +'</tr></thead><tbody>';
+
+  /* photos */
+  html+='<tr><td class="cmp-label">Фото</td>'
+    +houses.map(h=>{
+      const fi=imgF(h.mlsId);
+      return '<td class="cmp-val" style="padding:0">'
+        +(fi?'<img class="cmp-photo" src="'+fi+'" onclick="openModal(\''+h.mlsId+'\')" alt="">'
+            :'<div class="cmp-photo-ph">🏠</div>')
+        +'</td>';
+    }).join('')+'</tr>';
+
+  /* scores */
+  html+=sectionRow('📊 Оценка');
+  const scoreVals=houses.map(h=>'<span class="sbadge '+scoreClass(h.score)+'">'+h.score+'/10</span>');
+  html+='<tr><td class="cmp-label">Балл</td>'+scoreVals.map((v,i)=>{
+    const nums=houses.map(h=>h.score);const best=Math.max(...nums);const worst=Math.min(...nums);
+    const cls=houses[i].score===best&&new Set(nums).size>1?'cmp-best':houses[i].score===worst&&new Set(nums).size>1?'cmp-worst':'';
+    return '<td class="cmp-val'+(cls?' '+cls:'')+'" style="text-align:center">'+v+'</td>';
+  }).join('')+'</tr>';
+  html+=row('Статус',houses.map(h=>'<span class="stbadge '+statusClass(h.status||'')+'">'+esc(h.status||'—')+'</span>'));
+
+  /* basic info */
+  html+=sectionRow('🏠 Основная информация');
+  html+=row('Цена',houses.map(h=>h.price||'—'),false);
+  html+=row('Тип',houses.map(h=>h.propertyType||'—'));
+  html+=row('Спальни',houses.map(h=>h.bedrooms||'—'),true);
+  html+=row('Ванные комнаты',houses.map(h=>h.bathrooms||'—'),true);
+  html+=row('Жилая площадь',houses.map(h=>h.livingArea||'—'),true);
+  html+=row('Площадь участка',houses.map(h=>h.lotArea||'—'),true);
+  html+=row('Год постройки',houses.map(h=>h.yearBuilt||'—'),true);
+  html+=row('Гараж / Парковка',houses.map(h=>h.garage||'—'));
+  html+=row('Район (качество)',houses.map(h=>'<span class="'+nqClass(h.neighbourhoodRating||'')+'">'+esc(h.neighbourhoodQuality||'—')+'</span>'));
+
+  /* finances */
+  html+=sectionRow('💰 Финансы');
+  html+=row('Муниц. оценка',houses.map(h=>h.municipalEvaluation||'—'));
+  html+=row('Муниц. налог',houses.map(h=>h.municipalTax||'—'),false);
+  html+=row('Школьный налог',houses.map(h=>h.schoolTax||'—'),false);
+  html+=row('Итого налоги',houses.map(h=>h.totalTaxes||'—'),false);
+  html+=row('Цена / оценка',houses.map(h=>h.priceVsEvaluation||'—'),false);
+  if(houses.some(h=>h.condoFees))html+=row('Кондо взносы',houses.map(h=>h.condoFees||'—'),false);
+
+  /* pros/cons */
+  html+=sectionRow('✅ Преимущества');
+  html+=listRow('',h=>h.advantages,'cmp-adv');
+  html+=sectionRow('❌ Недостатки');
+  html+=listRow('',h=>h.disadvantages,'cmp-dis');
+  if(houses.some(h=>toArr(h.openQuestions).length)){
+    html+=sectionRow('❓ Открытые вопросы');
+    html+=listRow('',h=>h.openQuestions);
+  }
+
+  /* building chars */
+  if(houses.some(h=>h.buildingCharacteristics)){
+    html+=sectionRow('🏗️ Характеристики здания');
+    html+=tableRow('',h=>{
+      const bc=parseBC(h.buildingCharacteristics||'');
+      if(!bc.length)return null;
+      return bc.map(r=>'<div style="font-size:12px;padding:1px 0"><strong style="color:var(--text2)">'+esc(r.k)+':</strong> '+esc(r.v)+'</div>').join('');
+    });
+  }
+
+  /* rooms */
+  if(houses.some(h=>h.rooms&&h.rooms.length)){
+    html+=sectionRow('🚪 Размеры комнат');
+    html+=tableRow('',h=>{
+      if(!h.rooms||!h.rooms.length)return null;
+      return '<table class="dp-table"><tr><th>Комната</th><th>Уровень</th><th>Размеры</th><th>Пол</th></tr>'
+        +h.rooms.map(r=>'<tr><td>'+esc(r.room||r.name||'')+'</td><td>'+esc(r.level)+'</td><td>'+esc(r.dimensions)+'</td><td>'+esc(r.flooring||r.floor||'')+'</td></tr>').join('')
+        +'</table>';
+    });
+  }
+
+  /* renovations */
+  if(houses.some(h=>h.renovations&&h.renovations.length)){
+    html+=sectionRow('🔧 Ремонты');
+    html+=tableRow('',h=>{
+      if(!h.renovations||!h.renovations.length)return null;
+      return '<table class="dp-table"><tr><th>Год</th><th>Работы</th></tr>'
+        +h.renovations.map(r=>'<tr><td>'+esc(r.year)+'</td><td>'+esc(r.work)+'</td></tr>').join('')
+        +'</table>';
+    });
+  }
+
+  /* inclusions */
+  if(houses.some(h=>h.inclusions||h.exclusions)){
+    html+=sectionRow('📦 Включения / Исключения');
+    html+=tableRow('',h=>{
+      if(!h.inclusions&&!h.exclusions)return null;
+      return (h.inclusions?'<div style="font-size:12px;margin-bottom:4px"><strong>Включено:</strong> '+esc(h.inclusions)+'</div>':'')
+            +(h.exclusions?'<div style="font-size:12px"><strong>Исключено:</strong> '+esc(h.exclusions)+'</div>':'');
+    });
+  }
+
+  /* price history */
+  if(houses.some(h=>h.priceHistory&&h.priceHistory.length)){
+    html+=sectionRow('📈 История цен');
+    html+=tableRow('',h=>{
+      if(!h.priceHistory||!h.priceHistory.length)return null;
+      return '<table class="dp-table"><tr><th>Дата</th><th>Цена</th><th>Событие</th></tr>'
+        +h.priceHistory.map(r=>'<tr><td>'+esc(r.date)+'</td><td>'+esc(r.price)+'</td><td>'+esc(r.event)+'</td></tr>').join('')
+        +'</table>';
+    });
+  }
+
+  /* notes */
+  if(houses.some(h=>h.notes)){
+    html+=sectionRow('📝 Заметки об объекте');
+    html+=tableRow('',h=>h.notes?'<pre style="font-size:12px;white-space:pre-wrap;margin:0">'+esc(h.notes)+'</pre>':null);
+  }
+
+  html+='</tbody></table></div>';
+  document.getElementById('cmpWrap').innerHTML=html;
+}
+
 /* ── collapsible sections ── */
 document.querySelectorAll('.sec-toggle').forEach(el=>{
   el.addEventListener('click',()=>{
@@ -5458,6 +5704,7 @@ function setThTop(){
 /* ── init ── */
 buildStats();
 render();
+renderCompare();
 setThTop();
 window.addEventListener('resize',setThTop);
 ['filterCity','filterScore','filterStatus','searchInput','sortBy'].forEach(id=>{
