@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анализ — 1465 Boul. du Millénaire, Saint-Basile-le-Grand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: #e0d9ce;
+    --text: #1a1714;
+    --text-muted: #7a7168;
+    --accent: #2c5f3a;
+    --accent-light: #e8f0ea;
+    --warn: #8a4a00;
+    --warn-light: #fdf3e7;
+    --red: #7a2020;
+    --red-light: #fdeaea;
+    --gold: #b08a2a;
+    --gold-light: #fdf8ec;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+    padding: 40px 20px 80px;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; }
+
+  .header {
+    border-bottom: 2px solid var(--text);
+    padding-bottom: 24px;
+    margin-bottom: 36px;
+  }
+
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .header-sub { color: var(--text-muted); font-size: 14px; }
+
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .meta-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .meta-value.neutral { color: var(--text); font-size: 16px; }
+  .meta-value.warn { color: var(--warn); font-size: 16px; }
+  .meta-value.red { color: var(--red); font-size: 16px; }
+
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--warn);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 2px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 20px;
+  }
+
+  .rating-badge span { font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 400; opacity: 0.8; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: var(--text);
+    color: #fff;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .review-box {
+    background: var(--gold-light);
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 24px;
+    font-style: italic;
+    color: var(--warn);
+  }
+
+  .fin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 520px) { .fin-grid { grid-template-columns: 1fr; } }
+
+  .fin-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    border-radius: 4px;
+  }
+
+  .fin-card.warn-card { border-left: 3px solid var(--gold); }
+  .fin-card.red-card { border-left: 3px solid var(--red); }
+
+  .fin-card .label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .fin-card .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .fin-card .value.green { color: var(--accent); }
+  .fin-card .value.neutral { color: var(--text); font-size: 17px; }
+  .fin-card .value.warn { color: var(--warn); font-size: 17px; }
+  .fin-card .value.red { color: var(--red); font-size: 17px; }
+  .fin-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .fin-total {
+    background: var(--text);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .fin-total .label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+  .fin-total .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .procon-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .procon-header {
+    padding: 10px 16px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .procon-header.pro { background: var(--accent-light); color: var(--accent); }
+  .procon-header.con { background: var(--red-light); color: var(--red); }
+
+  .procon-list { list-style: none; padding: 12px 16px; }
+
+  .procon-list li {
+    padding: 5px 0;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .procon-list li:last-child { border-bottom: none; }
+  .procon-list li::before { flex-shrink: 0; margin-top: 3px; font-size: 11px; }
+  .pro-list li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+  .con-list li::before { content: "✕"; color: var(--red); font-weight: 700; }
+
+  table.status-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  table.status-table th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  table.status-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  table.status-table tr:last-child td { border-bottom: none; }
+  table.status-table tr:hover td { background: var(--surface2); }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .badge.green { background: var(--accent-light); color: var(--accent); }
+  .badge.yellow { background: var(--warn-light); color: var(--warn); }
+  .badge.red { background: var(--red-light); color: var(--red); }
+
+  .callout {
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  .callout.green { background: var(--accent-light); border-left: 3px solid var(--accent); }
+  .callout.yellow { background: var(--warn-light); border-left: 3px solid var(--gold); }
+  .callout.red { background: var(--red-light); border-left: 3px solid var(--red); }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  .price-history {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .price-row:last-child { border-bottom: none; }
+  .price-row .price-drop { color: var(--accent); font-weight: 600; }
+  .price-row .strikethrough { text-decoration: line-through; color: var(--text-muted); }
+
+  table.rooms { font-size: 13px; }
+  table.rooms td:nth-child(3) { color: var(--text-muted); }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Полный анализ объекта недвижимости</div>
+    <h1>1465, Boul. du Millénaire<br>Saint-Basile-le-Grand</h1>
+    <div class="header-sub">Montérégie · Квартал Montagne · Кондоминиум-дом divise, Jumelé, 2 этажа + подвал · MLS 17933433</div>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Цена продажи</span>
+        <span class="meta-value">479 900 $</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Муниц. оценка 2026</span>
+        <span class="meta-value neutral">437 800 $</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Цена / Оценка</span>
+        <span class="meta-value neutral">110 %</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Год постройки</span>
+        <span class="meta-value neutral">2004</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Взносы кондо</span>
+        <span class="meta-value warn">205 $/мес ⚠</span>
+      </div>
+    </div>
+    <div class="rating-badge">4 / 10 <span>Личная оценка</span></div>
+  </div>
+
+  <!-- PRICE HISTORY -->
+  <div class="callout red" style="margin-bottom:24px;">
+    <strong>⚠ Снижение цены на 45 100 $ — тревожный сигнал</strong>
+    Объект был выставлен в июне 2026 г. по 525 000 $ (MLS 18934713), затем снят и перевыставлен по 479 900 $ под новым номером (MLS 17933433). Такое резкое снижение и смена MLS-номера часто указывают на трудности с продажей или выявленные проблемы.
+  </div>
+
+  <!-- 1. FINANCIALS -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Финансы</div>
+    <div class="fin-grid">
+      <div class="fin-card">
+        <div class="label">Цена продажи</div>
+        <div class="value green">479 900 $</div>
+        <div class="sub">Снижена с 525 000 $ (−45 100 $)</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Муниципальная оценка (2026)</div>
+        <div class="value neutral">437 800 $</div>
+        <div class="sub">Участок 130 000 $ + Здание 307 800 $</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Муниципальный налог (2026)</div>
+        <div class="value neutral">3 339 $/год</div>
+      </div>
+      <div class="fin-card warn-card">
+        <div class="label">Школьный налог (2026)</div>
+        <div class="value warn">493 $/год</div>
+        <div class="sub">⚠ Аномально высокий — в ~2× выше типичного (~250 $)</div>
+      </div>
+      <div class="fin-card warn-card">
+        <div class="label">Взносы кондо</div>
+        <div class="value warn">2 460 $/год</div>
+        <div class="sub">205 $/мес · ⚠ выше порога 200 $/мес</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Цена vs оценка</div>
+        <div class="value neutral">110 %</div>
+        <div class="sub">Разумно, но с учётом проблем — завышено</div>
+      </div>
+    </div>
+    <div class="fin-total">
+      <div>
+        <div class="label">Итого расходов в год</div>
+        <div style="font-size:12px;opacity:0.6;margin-top:2px;">налоги + взносы кондо</div>
+      </div>
+      <div class="value">~6 292 $/год</div>
+    </div>
+  </div>
+
+  <!-- 2. PRO/CON -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> Преимущества и недостатки</div>
+    <div class="two-col">
+      <div class="procon-box">
+        <div class="procon-header pro">✓ Преимущества</div>
+        <ul class="procon-list pro-list">
+          <li>Кровля заменена в 2019 г. — документы есть</li>
+          <li>Настенный тепловой насос (2024) — отопление + кондиционирование</li>
+          <li>Водонагреватель 2024 г. — не в аренде</li>
+          <li>Утеплитель чердака — Cellulose Écologique R24</li>
+          <li>Подвал полный, отделанный (потолок 6+ фут) — спальня + семейная комната</li>
+          <li>Drain français установлен</li>
+          <li>Продажа с юридической гарантией качества ✅</li>
+          <li>Тихий семейный район, рядом поезд, CEGEP, школы, парки</li>
+          <li>Въезд 1 июля 2026 — разумный срок</li>
+          <li>3 спальни (2 наверху + 1 в подвале), 1 ванная + санузел</li>
+          <li>Снижение цены даёт пространство для торга</li>
+        </ul>
+      </div>
+      <div class="procon-box">
+        <div class="procon-header con">✕ Недостатки и риски</div>
+        <ul class="procon-list con-list">
+          <li>🔴 Плесень на чердаке — дезинфекция 2022 г. (Eco Renov)</li>
+          <li>🔴 Трещина в фундаменте — задекларирован ремонт</li>
+          <li>🔴 Протечка через кровлю — задекларирована</li>
+          <li>Снижение цены на 45 100 $ и смена MLS-номера</li>
+          <li>Взносы кондо 205 $/мес — выше порога 200 $</li>
+          <li>Школьный налог 493 $ — аномально высокий</li>
+          <li>Итого расходы 6 292 $/год — выше среднего</li>
+          <li>Страховщик общих частей неизвестен (D14.3 = не знаю)</li>
+          <li>Большинство пунктов D14 по общим частям = «не знаю»</li>
+          <li>Нет плана управления активами не уточнено в D2.6</li>
+          <li>Электрическое отопление (плинтусы) — оригинальное с 2004 г.</li>
+          <li>1 ванная на 3 спальни — ограничено для семьи</li>
+          <li>Год постройки 2004 — возраст 21 год</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. SELLER DECLARATION -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Декларации продавца (DVD 94779) — Ключевые пункты</div>
+
+    <div class="callout red">
+      <strong>🔴 Три серьёзные проблемы в одном доме</strong>
+      Протечка кровли + плесень на чердаке + трещина фундамента — каждая из них требует отдельной профессиональной проверки. Комбинация трёх проблем в доме 2004 года существенно повышает риск.
+    </div>
+
+    <table class="status-table" style="margin-bottom:16px;">
+      <thead>
+        <tr>
+          <th>Пункт</th>
+          <th>Декларация</th>
+          <th>Статус</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>D3.1 + D15</td>
+          <td>Инфильтрация воды через КРОВЛЮ — задекларирована. D15: плесень в чердачном пространстве в одном конкретном месте. Дезинфекция выполнена компанией Eco Renov в 2022 г., счёт есть.</td>
+          <td><span class="badge red">🔴 Серьёзно</span></td>
+        </tr>
+        <tr>
+          <td>D4.2</td>
+          <td>Работы по стабилизации фундамента — ДА. Конкретно: «Réparation fissure» (ремонт трещины). Дата, гарантия и детали не указаны.</td>
+          <td><span class="badge red">🔴 Серьёзно</span></td>
+        </tr>
+        <tr>
+          <td>D11.1</td>
+          <td>Насекомые — ДА. «Petites fourmis en saison» (мелкие сезонные муравьи). Экстерминатор не вызывался. Нужно исключить fourmis charpentières.</td>
+          <td><span class="badge yellow">⚠ Проверить</span></td>
+        </tr>
+        <tr>
+          <td>D12.1 + D12.2</td>
+          <td>Инспекция проводилась — ДА, документы есть. Дополнительные экспертизы проводились — ДА, документы есть. Предположительно связано с плесенью и фундаментом.</td>
+          <td><span class="badge yellow">Запросить отчёты</span></td>
+        </tr>
+        <tr>
+          <td>D2.1</td>
+          <td>Управление — внешнее (Loucandrique). Профессиональный управляющий синдикатом.</td>
+          <td><span class="badge yellow">Нейтрально</span></td>
+        </tr>
+        <tr>
+          <td>D2.6</td>
+          <td>План управления активами — ДА (étude du fonds de prévoyance + carnet d'entretien). Это лучше, чем Marcel-Trudel.</td>
+          <td><span class="badge green">✓ Есть</span></td>
+        </tr>
+        <tr>
+          <td>D7.1</td>
+          <td>Кровля заменена в 2019 г., тип — барды асфальтовые, документы есть, гололёд не скапливается.</td>
+          <td><span class="badge green">✓ Обновлена</span></td>
+        </tr>
+        <tr>
+          <td>D8.4</td>
+          <td>Drain français — ДА, установлен. Доступен для инспекции.</td>
+          <td><span class="badge green">✓ Есть</span></td>
+        </tr>
+        <tr>
+          <td>D10.9</td>
+          <td>Термопомпа муральная 2024 г., документы есть, проблем не было.</td>
+          <td><span class="badge green">✓ Новая</span></td>
+        </tr>
+        <tr>
+          <td>D14.3–D14.10</td>
+          <td>Большинство пунктов по общим частям — «не знаю» (страховщик, проблемы с почвой, кровлей, плесенью, котизации спецьяль). Информация о синдикате крайне ограничена.</td>
+          <td><span class="badge red">⚠ Пробелы</span></td>
+        </tr>
+        <tr>
+          <td>D5.3</td>
+          <td>Проблем в подвале или под полом — НЕТ.</td>
+          <td><span class="badge green">✓ Чисто</span></td>
+        </tr>
+        <tr>
+          <td>D4.3–D4.4</td>
+          <td>Загрязнения грунта, нефтяного резервуара — НЕТ.</td>
+          <td><span class="badge green">✓ Чисто</span></td>
+        </tr>
+        <tr>
+          <td>D6.1–D6.4</td>
+          <td>Конденсат, запахи, плесень в жилых помещениях, асбест — НЕТ.</td>
+          <td><span class="badge green">✓ Чисто</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout yellow">
+      <strong>Важно по фундаменту (D4.2)</strong>
+      Трещина задекларирована и отремонтирована, но нет дат и деталей. Необходимо запросить: кто делал ремонт, когда, есть ли письменная гарантия, проводилась ли профессиональная оценка структурным инженером.
+    </div>
+
+    <div class="callout yellow" style="margin-top:0;">
+      <strong>Важно по плесени (D3.1 + D15)</strong>
+      Дезинфекция 2022 г. — 4 года назад. Плесень на чердаке часто рецидивирует при недостаточной вентиляции. При инспекции обязательно осмотреть чердачное пространство и убедиться в отсутствии повторного роста.
+    </div>
+  </div>
+
+  <!-- 4. IMPROVEMENTS -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Улучшения и состояние систем</div>
+    <table class="status-table">
+      <thead><tr><th>Год</th><th>Работы / Система</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>2024</td><td>Настенный тепловой насос (муральный) — отопление и кондиционирование</td><td><span class="badge green">Новый ✓</span></td></tr>
+        <tr><td>2024</td><td>Водонагреватель — не в аренде</td><td><span class="badge green">Новый ✓</span></td></tr>
+        <tr><td>2022</td><td>Дезинфекция плесени на чердаке (Eco Renov) — локально</td><td><span class="badge yellow">Устранено — проверить</span></td></tr>
+        <tr><td>2019</td><td>Замена кровли (асфальтовая черепица) — документы есть</td><td><span class="badge green">Обновлена ✓</span></td></tr>
+        <tr><td>н/д</td><td>Ремонт трещины фундамента — дата неизвестна</td><td><span class="badge red">Детали требуются</span></td></tr>
+        <tr><td>2004</td><td>Электрическое отопление (плинтусы) — оригинальное</td><td><span class="badge yellow">Возраст 21 год</span></td></tr>
+        <tr><td>2004</td><td>Утеплитель чердака — Cellulose Écologique R24 (обновлён)</td><td><span class="badge green">Хороший ✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 5. ROOMS -->
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Размеры комнат</div>
+    <table class="status-table rooms">
+      <thead>
+        <tr><th>Комната</th><th>Этаж</th><th>Размеры</th><th>Покрытие</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Прихожая</td><td>1-й</td><td>1,1 × 1,9 м</td><td>Керамика</td></tr>
+        <tr><td>Гостевой санузел</td><td>1-й</td><td>0,8 × 2,5 м</td><td>Керамика</td></tr>
+        <tr><td>Гостиная</td><td>1-й</td><td>3,5 × 5,2 м</td><td>Дерево</td></tr>
+        <tr><td>Кухня</td><td>1-й</td><td>4,2 × 3,2 м</td><td>Керамика</td></tr>
+        <tr><td>Столовая</td><td>1-й</td><td>2,2 × 3,2 м</td><td>Дерево</td></tr>
+        <tr><td>Главная спальня</td><td>2-й</td><td>3,2 × 5,7 м</td><td>Паркет</td></tr>
+        <tr><td>Спальня 2</td><td>2-й</td><td>3,4 × 4,7 м</td><td>Паркет</td></tr>
+        <tr><td>Ванная комната (полная)</td><td>2-й</td><td>3,7 × 2,3 м</td><td>Паркет</td></tr>
+        <tr><td>Семейная комната</td><td>Подвал</td><td>3,2 × 6,0 м</td><td>Ламинат</td></tr>
+        <tr><td>Спальня 3</td><td>Подвал</td><td>3,2 × 3,2 м</td><td>Ламинат</td></tr>
+        <tr><td>Прачечная</td><td>Подвал</td><td>2,1 × 3,6 м</td><td>Гибкое покрытие</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. OPEN QUESTIONS -->
+  <div class="section">
+    <div class="section-title"><span class="num">6</span> Открытые вопросы и действия</div>
+    <table class="status-table">
+      <thead><tr><th>Вопрос</th><th>Статус</th><th>Примечание</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Детали ремонта трещины фундамента</td>
+          <td><span class="badge red">Критично</span></td>
+          <td>Когда, кем, есть ли гарантия? Обязателен осмотр структурным инженером до предложения</td>
+        </tr>
+        <tr>
+          <td>Отчёт по дезинфекции плесени (Eco Renov, 2022)</td>
+          <td><span class="badge red">Критично</span></td>
+          <td>Запросить счёт и отчёт. При инспекции осмотреть чердак на повторный рост</td>
+        </tr>
+        <tr>
+          <td>Все отчёты инспекций и экспертиз (D12.1, D12.2)</td>
+          <td><span class="badge red">Критично</span></td>
+          <td>Продавец обязан предоставить — они должны быть у агента</td>
+        </tr>
+        <tr>
+          <td>Страховщик общих частей (D14.3 = «не знаю»)</td>
+          <td><span class="badge yellow">Уточнить</span></td>
+          <td>Запросить у управляющего Loucandrique полис и покрытие</td>
+        </tr>
+        <tr>
+          <td>Котизации спецьяль (D14.10 = «не знаю»)</td>
+          <td><span class="badge yellow">Уточнить</span></td>
+          <td>Нужен DRCOP от синдиката — обязательный документ</td>
+        </tr>
+        <tr>
+          <td>Что входит в взносы 205 $/мес?</td>
+          <td><span class="badge yellow">Уточнить</span></td>
+          <td>Запросить у Loucandrique детализацию взносов</td>
+        </tr>
+        <tr>
+          <td>Муравьи — тип (fourmis charpentières?)</td>
+          <td><span class="badge yellow">При инспекции</span></td>
+          <td>Осмотреть деревянные конструкции, периметр здания</td>
+        </tr>
+        <tr>
+          <td>Почему школьный налог 493 $?</td>
+          <td><span class="badge yellow">Уточнить</span></td>
+          <td>Норма для Saint-Basile-le-Grand ≈ 250 $. Уточнить в Municipalité или у агента</td>
+        </tr>
+        <tr>
+          <td>Юридическая гарантия</td>
+          <td><span class="badge green">Есть ✓</span></td>
+          <td>«Sale with legal warranty of quality» — указано в карточке Centris</td>
+        </tr>
+        <tr>
+          <td>Тест на пирит</td>
+          <td><span class="badge yellow">Рекомендовать</span></td>
+          <td>Дом 2004 года — зона риска для пирита в Монтережи. D12.2 не уточняет, проводился ли тест</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 7. COMPARISON -->
+  <div class="section">
+    <div class="section-title"><span class="num">7</span> Сравнение с 2341 Rue Marcel-Trudel</div>
+    <table class="status-table">
+      <thead><tr><th>Параметр</th><th>1465 Millénaire</th><th>2341 Marcel-Trudel</th></tr></thead>
+      <tbody>
+        <tr><td>Цена</td><td>479 900 $</td><td>539 000 $</td></tr>
+        <tr><td>Год постройки</td><td>2004 (21 год)</td><td>2015 (10 лет) ✅</td></tr>
+        <tr><td>Взносы кондо</td><td>205 $/мес ⚠</td><td>150 $/мес ✅</td></tr>
+        <tr><td>Ежегодные расходы</td><td>6 292 $</td><td>6 067 $</td></tr>
+        <tr><td>Фундамент</td><td>Трещина (ремонт) 🔴</td><td>Чисто ✅</td></tr>
+        <tr><td>Плесень</td><td>Чердак (2022, устранено) 🔴</td><td>Не обнаружена ✅</td></tr>
+        <tr><td>Кровля</td><td>2019 (7 лет) ✅</td><td>2015 (10 лет) ✅</td></tr>
+        <tr><td>Тепловой насос</td><td>Муральный 2024 ✅</td><td>Муральный 2026 ✅</td></tr>
+        <tr><td>Подвал</td><td>Полный, отделанный ✅</td><td>Нет 🔴</td></tr>
+        <tr><td>Место хранения</td><td>Подвал + прачечная ✅</td><td>Только кладовая ⚠</td></tr>
+        <tr><td>Управление синдикатом</td><td>Внешнее (Loucandrique)</td><td>Autogestion</td></tr>
+        <tr><td>DRCOP получен</td><td>Нет ⚠</td><td>Да ✅</td></tr>
+        <tr><td>Личная оценка</td><td><strong>4 / 10</strong></td><td><strong>9 / 10</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 8. CONCLUSION -->
+  <div class="section">
+    <div class="section-title"><span class="num">8</span> Итоговый вывод</div>
+    <div class="callout red">
+      <strong>Вердикт: 4/10 — Высокий риск, требует серьёзной проверки</strong>
+      Три задекларированные проблемы (плесень на чердаке, протечка кровли, трещина фундамента) в доме 2004 года создают существенный риск. Снижение цены на 45 100 $ и смена MLS-номера дополнительно настораживают. Хотя каждая проблема формально «устранена», без подробных отчётов и независимой экспертизы невозможно оценить реальное состояние.
+    </div>
+    <div class="callout yellow" style="margin-top:0;">
+      <strong>Условия для рассмотрения предложения</strong>
+      (1) Получить все отчёты инспекций и экспертиз (D12.1, D12.2, Eco Renov 2022). (2) Заказать независимую инспекцию с обязательным осмотром чердака и фундамента. (3) Привлечь структурного инженера для оценки трещины фундамента. (4) Получить DRCOP от синдиката Loucandrique. (5) Предложение только с условием инспекции (clause d'inspection) и только если результаты удовлетворительны.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Анализ подготовлен на основе: Centris 17933433 · Déclarations du vendeur DVD 94779 (OACIQ, 15 марта 2026) · MD-файл покупателя</span>
+    <span>6 июня 2026</span>
+  </div>
+
+</div>
+</body>
+</html>

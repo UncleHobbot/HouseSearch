@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анализ — 441 Rue Laforce, Chambly</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: #e0d9ce;
+    --text: #1a1714;
+    --text-muted: #7a7168;
+    --accent: #2c5f3a;
+    --accent-light: #e8f0ea;
+    --warn: #8a4a00;
+    --warn-light: #fdf3e7;
+    --red: #7a2020;
+    --red-light: #fdeaea;
+    --gold: #b08a2a;
+    --gold-light: #fdf8ec;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; padding: 40px 20px 80px; }
+  .page { max-width: 860px; margin: 0 auto; }
+  .header { border-bottom: 2px solid var(--text); padding-bottom: 24px; margin-bottom: 36px; }
+  .header-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; line-height: 1.15; margin-bottom: 6px; }
+  .header-sub { color: var(--text-muted); font-size: 14px; }
+  .header-meta { display: flex; gap: 32px; margin-top: 20px; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+  .meta-value { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--accent); }
+  .meta-value.neutral { color: var(--text); font-size: 16px; }
+  .meta-value.warn { color: var(--warn); font-size: 16px; }
+  .rating-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #fff; padding: 6px 16px; border-radius: 2px; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-top: 20px; }
+  .rating-badge span { font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 400; opacity: 0.8; }
+  .rating-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+  .section { margin-bottom: 36px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section-title .num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: var(--text); color: #fff; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; border-radius: 50%; flex-shrink: 0; }
+  .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  @media (max-width: 520px) { .fin-grid { grid-template-columns: 1fr; } }
+  .fin-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 18px; border-radius: 4px; }
+  .fin-card.good-card { border-left: 3px solid var(--accent); }
+  .fin-card.warn-card { border-left: 3px solid var(--gold); }
+  .fin-card .label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .fin-card .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+  .fin-card .value.green { color: var(--accent); }
+  .fin-card .value.neutral { color: var(--text); font-size: 17px; }
+  .fin-card .value.warn { color: var(--warn); font-size: 17px; }
+  .fin-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .fin-total { background: var(--text); color: #fff; padding: 14px 18px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .fin-total .label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+  .fin-total .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+  .procon-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .procon-header { padding: 10px 16px; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
+  .procon-header.pro { background: var(--accent-light); color: var(--accent); }
+  .procon-header.con { background: var(--warn-light); color: var(--warn); }
+  .procon-list { list-style: none; padding: 12px 16px; }
+  .procon-list li { padding: 5px 0; font-size: 14px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
+  .procon-list li:last-child { border-bottom: none; }
+  .procon-list li::before { flex-shrink: 0; margin-top: 3px; font-size: 11px; }
+  .pro-list li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+  .con-list li::before { content: "−"; color: var(--warn); font-weight: 700; }
+  table.status-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.status-table th { text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 8px 12px; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  table.status-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.status-table tr:last-child td { border-bottom: none; }
+  table.status-table tr:hover td { background: var(--surface2); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 2px; font-size: 12px; font-weight: 500; }
+  .badge.green { background: var(--accent-light); color: var(--accent); }
+  .badge.yellow { background: var(--warn-light); color: var(--warn); }
+  .badge.red { background: var(--red-light); color: var(--red); }
+  .callout { border-radius: 4px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout.green { background: var(--accent-light); border-left: 3px solid var(--accent); }
+  .callout.yellow { background: var(--warn-light); border-left: 3px solid var(--gold); }
+  .callout.red { background: var(--red-light); border-left: 3px solid var(--red); }
+  .callout strong { display: block; margin-bottom: 4px; }
+  .pyrite-box { background: var(--accent-light); border: 1px solid var(--accent); border-radius: 4px; padding: 16px 20px; margin-bottom: 16px; }
+  .pyrite-box .pyrite-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+  .pyrite-result { display: flex; align-items: center; gap: 16px; }
+  .pyrite-score { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; color: var(--accent); }
+  .pyrite-detail { font-size: 13px; color: var(--text-muted); }
+  .footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Полный анализ объекта недвижимости</div>
+    <h1>441, Rue Laforce<br>Chambly</h1>
+    <div class="header-sub">Montérégie · Copropriété divise «Les Cours Vivaldi» · Jumelé 2 этажа + подвал · MLS 10557800</div>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Цена продажи</span>
+        <span class="meta-value">499 900 $</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Муниц. оценка 2026</span>
+        <span class="meta-value neutral">436 500 $</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Цена / Оценка</span>
+        <span class="meta-value neutral">115 %</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Год постройки</span>
+        <span class="meta-value warn">1993/1994</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Общие расходы</span>
+        <span class="meta-value neutral">49 $/мес ✅</span>
+      </div>
+    </div>
+    <div class="rating-badge">6 / 10 <span>Пересмотренная оценка</span></div>
+    <div class="rating-note">⬆ Пересмотрено с 4/10 после анализа декларации продавца: тепловой насос есть (2018), тест на пирит чистый (IPPG=0), богатый список улучшений</div>
+  </div>
+
+  <!-- 1. FINANCIALS -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Финансы</div>
+    <div class="fin-grid">
+      <div class="fin-card">
+        <div class="label">Цена продажи</div>
+        <div class="value green">499 900 $</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Муниципальная оценка (2026)</div>
+        <div class="value neutral">436 500 $</div>
+        <div class="sub">Участок 71 300 $ + Здание 365 200 $</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Муниципальный налог (2026)</div>
+        <div class="value neutral">2 420 $/год</div>
+        <div class="sub">✅ Самый низкий в подборке</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Школьный налог (2025)</div>
+        <div class="value neutral">346 $/год</div>
+      </div>
+      <div class="fin-card good-card">
+        <div class="label">Общие расходы кондо</div>
+        <div class="value neutral">585 $/год</div>
+        <div class="sub">49 $/мес · ✅ значительно ниже порога 200 $/мес</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Электричество (год)</div>
+        <div class="value neutral">1 590 $/год</div>
+        <div class="sub">Указано в карточке Centris</div>
+      </div>
+    </div>
+    <div class="fin-total">
+      <div>
+        <div class="label">Итого расходов в год</div>
+        <div style="font-size:12px;opacity:0.6;margin-top:2px;">налоги + кондо + электричество</div>
+      </div>
+      <div class="value">~4 941 $/год</div>
+    </div>
+    <div class="callout green" style="margin-top:12px;">
+      <strong>✅ Самые низкие общие расходы в подборке</strong>
+      4 941 $/год против 6 067 $ у Marcel-Trudel и 6 292 $ у Saint-Basile. Разница ~1 100–1 350 $/год (~90–112 $/мес) — существенная экономия за горизонт владения 10 лет.
+    </div>
+  </div>
+
+  <!-- 2. PRO/CON -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> Преимущества и недостатки</div>
+    <div class="two-col">
+      <div class="procon-box">
+        <div class="procon-header pro">✓ Преимущества</div>
+        <ul class="procon-list pro-list">
+          <li>Самые низкие расходы в подборке: 49 $/мес кондо, налоги 2 766 $/год ✅</li>
+          <li>Тепловой насос муральный (2018) — отопление + кондиционирование ✅</li>
+          <li>Тест на пирит IPPG = 0 (Terratech, 2003) — абсолютно чисто ✅</li>
+          <li>Сертификат геодезиста 2016 г., нет эмпьетман ✅</li>
+          <li>3 спальни на 2-м этаже — 2 кабинета + спальня ✅</li>
+          <li>Подвал полный, отделан: семейная комната 4,4×4,1 м + хранение 4,5×5,5 м ✅</li>
+          <li>Дровяной камин + подтверждённое соответствие нормам</li>
+          <li>Рекуператор воздуха заменён в 2019 г.</li>
+          <li>Водонагреватель 2022 г., не в аренде</li>
+          <li>Кровля 2013 г. с документами, пуит де люмьер заменён</li>
+          <li>Сертификация RénoClimat 2019 ✅</li>
+          <li>Центральный пылесос включён</li>
+          <li>Продажа с юридической гарантией ✅</li>
+          <li>Богатый список ремонтов 2018–2026 (см. раздел 4)</li>
+          <li>Chambly: Форт, канал, велодорожки, шоссе 10 и 30</li>
+        </ul>
+      </div>
+      <div class="procon-box">
+        <div class="procon-header con">− Недостатки и риски</div>
+        <ul class="procon-list con-list">
+          <li>Год постройки 1993/1994 — возраст 32 года</li>
+          <li>⚠ Трещины в фундаменте (D5.3) — задекларированы, но детали неизвестны</li>
+          <li>⚠ Протечка кровли в прошлом (D3.1) — устранена при замене, 2013 г.</li>
+          <li>⚠ D14.10 — котизации спецьяль проголосованы — требует уточнения</li>
+          <li>Конденсат на окне главной спальни при сильном морозе (D6.1)</li>
+          <li>Очень маленький участок 133 м² (1 433 кв.фут) — мало двора</li>
+          <li>Câblodistribution (D14.8) — работы по ремонту общего канализационного стока (2026) — что именно?</li>
+          <li>Chambly ~33 км от Монреаля — зависимость от авто</li>
+          <li>Въезд 1 сентября 2026 — 87 дней ожидания</li>
+          <li>1 ванная на 3 спальни</li>
+          <li>Drain français — статус неизвестен (D8.4 = «не знаю»)</li>
+          <li>Кровля 2013 г. — возраст 13 лет (черепица служит ~20–25 лет)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PYRITE TEST -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Тест на пирит — Результат</div>
+    <div class="pyrite-box">
+      <div class="pyrite-title">Результат теста на пирит (Pyritest inc. / Terratech, 8 октября 2003)</div>
+      <div class="pyrite-result">
+        <div class="pyrite-score">IPPG = 0</div>
+        <div>
+          <div style="font-weight:600;color:var(--accent);margin-bottom:4px;">✅ Нулевой потенциал набухания — абсолютно чисто</div>
+          <div class="pyrite-detail">Протокол CTQ-M200 · Лаборатория Terratech (SNC-Lavalin) · Образец из под-пола подвала.<br>Единственный зафиксированный минерал: корнеан (Cornéenne). Никаких реактивных пород не обнаружено.<br>Заключение геолога Jean Gagné: «Aucun gonflement nuisible dû à la présence de pyrite n'est à prévoir dans ce bâtiment.»</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout yellow">
+      <strong>Примечание о дате теста</strong>
+      Тест проведён в 2003 году — 23 года назад. Он отражает состояние на момент проведения. Поскольку IPPG = 0 (нулевой), риск пирита практически исключён вне зависимости от даты. Для Chambly, который находится в зоне умеренного пирит-риска Монтережи, наличие этого теста — важный документ.
+    </div>
+  </div>
+
+  <!-- 4. SELLER DECLARATION -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Декларации продавца (DVD 05741) — Ключевые пункты</div>
+
+    <table class="status-table" style="margin-bottom:16px;">
+      <thead><tr><th>Пункт</th><th>Декларация</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>D5.3</td>
+          <td>Трещины в фундаменте — задекларированы. D4.2 = нет стабилизационных работ. D15 отсылает к «anciennes DV (disponible)» — прежним декларациям. Детали неизвестны.</td>
+          <td><span class="badge yellow">⚠ Уточнить</span></td>
+        </tr>
+        <tr>
+          <td>D3.1 + D15</td>
+          <td>Инфильтрация воды через кровлю — была в прошлом. D15: также через пуит де люмьер. Всё устранено при замене кровли 2013 г. Ничего не повторялось.</td>
+          <td><span class="badge green">Устранено ✓</span></td>
+        </tr>
+        <tr>
+          <td>D8.1 + D15</td>
+          <td>Фитинг слива душа — протечка была (информация от предыдущего владельца). Устранено при реновации ванной. Пуит де люмьер — то же. Ничего не повторялось.</td>
+          <td><span class="badge green">Устранено ✓</span></td>
+        </tr>
+        <tr>
+          <td>D6.1 + D15</td>
+          <td>Конденсат на маленьком шестиугольном окне главной спальни при сильных морозах. Не мешает нормальному использованию.</td>
+          <td><span class="badge yellow">Незначительно</span></td>
+        </tr>
+        <tr>
+          <td>D14.10</td>
+          <td>Котизации спецьяль проголосованы — ДА. Детали не раскрыты в декларации. D15 упоминает ремонт общего канализационного стока парковки в 2026 г.</td>
+          <td><span class="badge red">⚠ Уточнить сумму</span></td>
+        </tr>
+        <tr>
+          <td>D10.9</td>
+          <td>Термопомпа муральная 2018 г. — документы есть, проблем не было. (В MD-файле ошибочно указано «нет теплового насоса»)</td>
+          <td><span class="badge green">Есть ✓ (2018)</span></td>
+        </tr>
+        <tr>
+          <td>D10.13 + D10.14</td>
+          <td>Дровяной камин (foyer), 1994 г., раз в год на Рождество. Раmonage 2025 г., каждые 2 года, владелец сам. Соответствует нормам.</td>
+          <td><span class="badge green">Соответствует ✓</span></td>
+        </tr>
+        <tr>
+          <td>D9.7</td>
+          <td>Сертификация RénoClimat 2019 — подтверждённая энергоэффективность.</td>
+          <td><span class="badge green">✓ Сертифицирован</span></td>
+        </tr>
+        <tr>
+          <td>D2.1</td>
+          <td>Синдикат «Les Cours Vivaldi» — autogestion. Взносы 48 $/мес = 585 $/год.</td>
+          <td><span class="badge green">Autogestion ✓</span></td>
+        </tr>
+        <tr>
+          <td>D2.6</td>
+          <td>Нет плана управления активами (étude du fonds de prévoyance).</td>
+          <td><span class="badge yellow">Отсутствует</span></td>
+        </tr>
+        <tr>
+          <td>D8.4</td>
+          <td>Drain français — «не знаю». Статус неизвестен.</td>
+          <td><span class="badge yellow">Неизвестно</span></td>
+        </tr>
+        <tr>
+          <td>D11–D13</td>
+          <td>Нет насекомых, нет отказов страховщиков, нет насильственной смерти, нет загрязнения грунта.</td>
+          <td><span class="badge green">Всё чисто ✓</span></td>
+        </tr>
+        <tr>
+          <td>D14.1–D14.9</td>
+          <td>Не в зоне наводнения, не аэропортовая зона, нет ограничений. D14.8 = крупные работы по общим частям были — именно ремонт стока.</td>
+          <td><span class="badge green">Чисто ✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout red">
+      <strong>⚠ Котизации спецьяль (D14.10) — главный вопрос перед предложением</strong>
+      Синдикат проголосовал за специальные взносы — это означает расход сверх обычных 49 $/мес. Скорее всего связано с ремонтом общего стока парковки в 2026 г. (D14.18 в D15). Необходимо уточнить сумму, распределение между юнитами и сроки оплаты до подачи предложения.
+    </div>
+
+    <div class="callout yellow">
+      <strong>Трещины в фундаменте (D5.3) — важно запросить</strong>
+      Задекларированы трещины, но нет данных о рабочих (D4.2=нет стабилизационных работ). D15 отсылает к «anciennes DV» — прежним декларациям продавца, которые должны быть у агента. Нужно запросить и изучить эти документы. Фундамент — бетонный литой (D5.1), что хорошо.
+    </div>
+  </div>
+
+  <!-- 5. IMPROVEMENTS -->
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Улучшения с момента покупки (2018–2026)</div>
+    <table class="status-table">
+      <thead><tr><th>Год</th><th>Работы</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>2026</td><td>Ремонт и частичная замена общего канализационного стока парковки (общие части)</td><td><span class="badge yellow">⚠ Котизация?</span></td></tr>
+        <tr><td>2022</td><td>Замена водонагревателя — не в аренде</td><td><span class="badge green">Новый ✓</span></td></tr>
+        <tr><td>2021</td><td>Замена дверей шкафов кухни + новый дощечной фартук + замена досок балкона + перила балкона</td><td><span class="badge green">Сделано ✓</span></td></tr>
+        <tr><td>2019</td><td>Замена рекуператора воздуха (échangeur d'air) · Сертификация RénoClimat</td><td><span class="badge green">✓</span></td></tr>
+        <tr><td>2018</td><td>Замена стеклопакетов (термос) окон ванной, спален, гостиной · Замена задней двери на porte-patio · Ламинат в подвале · Полный ремонт ванной комнаты · Установка термопомпы муральной</td><td><span class="badge green">Много ✓</span></td></tr>
+        <tr><td>2013</td><td>Замена кровли (асфальтовая черепица) + пуит де люмьер — с документами</td><td><span class="badge green">Документировано ✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. CERTIFICATE DE LOCALISATION -->
+  <div class="section">
+    <div class="section-title"><span class="num">6</span> Сертификат геодезиста (2016)</div>
+    <table class="status-table">
+      <thead><tr><th>Пункт</th><th>Результат</th></tr></thead>
+      <tbody>
+        <tr><td>Дата съёмки</td><td>15 апреля 2016 г. · Геодезист Éric Denicourt</td></tr>
+        <tr><td>Эмпьетман (empiètements)</td><td><span class="badge green">Нет ✓</span> — «Il n'y a aucun empiètement apparent, souffert ou exercé»</td></tr>
+        <tr><td>Соответствие зонированию</td><td><span class="badge green">✓</span> — Зона 2RA2-44, строение соответствует правилам</td></tr>
+        <tr><td>Зона наводнения</td><td><span class="badge green">Нет ✓</span></td></tr>
+        <tr><td>Мур митуан</td><td>Общая стена с соседом (lot 2 043 000) — стандарт для jumelé</td></tr>
+        <tr><td>Сервитуды</td><td>Сервитут видов (inscr. 936 378) · Сервитут Hydro-Québec (923 377) · Сервитут Hydro-Québec + Bell Canada (774 755) — стандартные коммунальные сервитуды</td></tr>
+        <tr><td>Забор западной границы</td><td>Не совпадает с кадастровой линией — отмечено на плане. <span class="badge yellow">Проверить при покупке</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout yellow" style="margin-top:12px;">
+      <strong>Сертификат 2016 года — 10 лет давности</strong>
+      Для юридической чистоты покупки банк потребует актуальный сертификат (не старше 5–10 лет в зависимости от кредитора). Уточнить у нотариуса, нужен ли новый. Если продавец его не заказывает — можно запросить это как условие предложения.
+    </div>
+  </div>
+
+  <!-- 7. ROOMS -->
+  <div class="section">
+    <div class="section-title"><span class="num">7</span> Размеры комнат</div>
+    <table class="status-table">
+      <thead><tr><th>Комната</th><th>Этаж</th><th>Размеры</th><th>Покрытие</th></tr></thead>
+      <tbody>
+        <tr><td>Кухня</td><td>1-й</td><td>2,9 × 2,6 м</td><td>—</td></tr>
+        <tr><td>Столовая</td><td>1-й</td><td>3,7 × 2,6 м</td><td>—</td></tr>
+        <tr><td>Гостиная (+ камин)</td><td>1-й</td><td>3,4 × 4,7 м</td><td>—</td></tr>
+        <tr><td>Прачечная / санузел</td><td>1-й</td><td>3,3 × 1,6 м</td><td>—</td></tr>
+        <tr><td>Главная спальня</td><td>2-й</td><td>4,6 × 3,5 м</td><td>—</td></tr>
+        <tr><td>Спальня 2</td><td>2-й</td><td>2,5 × 3,1 м</td><td>—</td></tr>
+        <tr><td>Спальня 3</td><td>2-й</td><td>2,5 × 3,3 м</td><td>—</td></tr>
+        <tr><td>Ванная комната (полная)</td><td>2-й</td><td>2,5 × 2,6 м</td><td>—</td></tr>
+        <tr><td>Семейная комната</td><td>Подвал</td><td>4,4 × 4,1 м</td><td>Ламинат (2018)</td></tr>
+        <tr><td>Хранение</td><td>Подвал</td><td>4,5 × 5,5 м (нестандартный)</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 8. OPEN QUESTIONS -->
+  <div class="section">
+    <div class="section-title"><span class="num">8</span> Открытые вопросы и действия перед предложением</div>
+    <table class="status-table">
+      <thead><tr><th>Вопрос</th><th>Статус</th><th>Примечание</th></tr></thead>
+      <tbody>
+        <tr><td>Тест на пирит</td><td><span class="badge green">Чисто ✓</span></td><td>IPPG = 0 (Terratech, 2003) — нулевой риск</td></tr>
+        <tr><td>Юридическая гарантия</td><td><span class="badge green">Есть ✓</span></td><td>«Sale with legal warranty of quality» — указано в Centris</td></tr>
+        <tr><td>Термопомпа</td><td><span class="badge green">Есть ✓ (2018)</span></td><td>Муральная, документы есть — ошибка в MD-файле исправлена</td></tr>
+        <tr><td>Котизации спецьяль (D14.10)</td><td><span class="badge red">Критично</span></td><td>Проголосованы, сумма неизвестна. Запросить у синдиката до предложения</td></tr>
+        <tr><td>Прежние декларации DV (D5.3)</td><td><span class="badge red">Критично</span></td><td>«Anciennes DV disponible» — запросить у агента для понимания истории трещин</td></tr>
+        <tr><td>Drain français (D8.4 = «не знаю»)</td><td><span class="badge yellow">Уточнить</span></td><td>При инспекции проверить наличие и состояние</td></tr>
+        <tr><td>Актуальность сертификата геодезиста (2016)</td><td><span class="badge yellow">Проверить</span></td><td>Уточнить у нотариуса, нужен ли новый при финансировании</td></tr>
+        <tr><td>Забор западной границы (сертификат)</td><td><span class="badge yellow">При инспекции</span></td><td>Не совпадает с кадастровой линией по сертификату 2016 г.</td></tr>
+        <tr><td>Конденсат на окне главной спальни</td><td><span class="badge yellow">При инспекции</span></td><td>D6.1 — осмотреть окно, оценить состояние стеклопакета</td></tr>
+        <tr><td>Кровля 2013 — возраст 13 лет</td><td><span class="badge yellow">При инспекции</span></td><td>Черепица служит 20–25 лет. Остаток ~7–12 лет — нормально, но зафиксировать</td></tr>
+        <tr><td>Страховщик общих частей</td><td><span class="badge yellow">Уточнить</span></td><td>D14.3 = «не знаю». Запросить у синдиката через DRCOP</td></tr>
+        <tr><td>DRCOP от синдиката</td><td><span class="badge red">Обязательно</span></td><td>Нет ни одного документа от синдиката. Запросить перед предложением</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 9. COMPARISON -->
+  <div class="section">
+    <div class="section-title"><span class="num">9</span> Сравнение трёх объектов</div>
+    <table class="status-table">
+      <thead><tr><th>Параметр</th><th>441 Laforce (Chambly)</th><th>2341 Marcel-Trudel</th><th>1465 Millénaire</th></tr></thead>
+      <tbody>
+        <tr><td>Цена</td><td>499 900 $</td><td>539 000 $</td><td>479 900 $</td></tr>
+        <tr><td>Год постройки</td><td>1993 (32 года)</td><td>2015 (10 лет) ✅</td><td>2004 (21 год)</td></tr>
+        <tr><td>Взносы/мес</td><td><strong>49 $ ✅✅</strong></td><td>150 $ ✅</td><td>205 $ ⚠</td></tr>
+        <tr><td>Расходы в год</td><td><strong>4 941 $ ✅</strong></td><td>6 067 $</td><td>6 292 $</td></tr>
+        <tr><td>Тепловой насос</td><td>✅ Муральный 2018</td><td>✅ Муральный 2026</td><td>✅ Муральный 2024</td></tr>
+        <tr><td>Пирит-тест</td><td><strong>IPPG=0 ✅✅</strong></td><td>Не требуется (2015)</td><td>Неизвестно ⚠</td></tr>
+        <tr><td>Фундамент</td><td>Трещины (детали неизвестны) ⚠</td><td>Чисто ✅</td><td>Трещина (ремонт) 🔴</td></tr>
+        <tr><td>Плесень/кровля</td><td>Кровля протекала (устранено 2013) ⚠</td><td>Чисто ✅</td><td>Плесень на чердаке 🔴</td></tr>
+        <tr><td>Подвал</td><td>✅ Полный, семейная + хранение</td><td>Нет ❌</td><td>✅ Полный</td></tr>
+        <tr><td>Сертификат геодезиста</td><td>✅ Есть (2016)</td><td>Нет (указан в D2.13)</td><td>❌ Нет</td></tr>
+        <tr><td>DRCOP получен</td><td>Нет ⚠</td><td>Да ✅</td><td>Нет ⚠</td></tr>
+        <tr><td>Котизации спецьяль</td><td>⚠ Проголосованы</td><td>Нет ✅</td><td>Неизвестно</td></tr>
+        <tr><td>Личная оценка</td><td><strong>6/10</strong></td><td><strong>9/10</strong></td><td><strong>4/10</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 10. CONCLUSION -->
+  <div class="section">
+    <div class="section-title"><span class="num">10</span> Итоговый вывод</div>
+    <div class="callout yellow">
+      <strong>Вердикт: 6/10 — Интересный объект, но требует ответов на ключевые вопросы</strong>
+      441 Rue Laforce переоценён в исходном MD-файле. У него есть реальные плюсы: абсолютно чистый тест на пирит, наличие термопомпы, богатый список ремонтов, нулевые по меркам рынка взносы 49 $/мес и самые низкие ежегодные расходы в подборке. Минусы — возраст 32 года, задекларированные трещины в фундаменте и проголосованные котизации спецьяль (сумма неизвестна).
+    </div>
+    <div class="callout red" style="margin-top:0;">
+      <strong>Перед подачей предложения — обязательно</strong>
+      (1) Уточнить сумму и сроки котизаций спецьяль (D14.10) у синдиката. (2) Запросить «anciennes DV» для понимания истории трещин в фундаменте. (3) Получить DRCOP от синдиката «Les Cours Vivaldi». (4) Инспекция с акцентом на фундамент, drain français, кровлю, окно главной спальни.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Анализ подготовлен на основе: Centris 10557800 · DVD 05741 (OACIQ, 3 июня 2026) · Тест пирит Pyritest/Terratech (2003) · Сертификат геодезиста Denicourt (2016) · MD-файл покупателя</span>
+    <span>6 июня 2026</span>
+  </div>
+
+</div>
+</body>
+</html>

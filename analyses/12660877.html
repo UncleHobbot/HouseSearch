@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анализ — 2341 Rue Marcel-Trudel, Longueuil</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: #e0d9ce;
+    --text: #1a1714;
+    --text-muted: #7a7168;
+    --accent: #2c5f3a;
+    --accent-light: #e8f0ea;
+    --warn: #8a4a00;
+    --warn-light: #fdf3e7;
+    --red: #7a2020;
+    --red-light: #fdeaea;
+    --gold: #b08a2a;
+    --gold-light: #fdf8ec;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+    padding: 40px 20px 80px;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; }
+
+  .header {
+    border-bottom: 2px solid var(--text);
+    padding-bottom: 24px;
+    margin-bottom: 36px;
+  }
+
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .header-sub { color: var(--text-muted); font-size: 14px; }
+
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .meta-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .meta-value.neutral { color: var(--text); font-size: 16px; }
+
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 2px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 20px;
+  }
+
+  .rating-badge span { font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 400; opacity: 0.8; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: var(--text);
+    color: #fff;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .review-box {
+    background: var(--gold-light);
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 24px;
+    font-style: italic;
+    color: var(--warn);
+  }
+
+  .fin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 520px) { .fin-grid { grid-template-columns: 1fr; } }
+
+  .fin-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    border-radius: 4px;
+  }
+
+  .fin-card .label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .fin-card .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .fin-card .value.green { color: var(--accent); }
+  .fin-card .value.neutral { color: var(--text); font-size: 17px; }
+  .fin-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .fin-total {
+    background: var(--text);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .fin-total .label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+  .fin-total .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .procon-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .procon-header {
+    padding: 10px 16px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .procon-header.pro { background: var(--accent-light); color: var(--accent); }
+  .procon-header.con { background: var(--warn-light); color: var(--warn); }
+
+  .procon-list { list-style: none; padding: 12px 16px; }
+
+  .procon-list li {
+    padding: 5px 0;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .procon-list li:last-child { border-bottom: none; }
+
+  .procon-list li::before { flex-shrink: 0; margin-top: 3px; font-size: 11px; }
+  .pro-list li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+  .con-list li::before { content: "−"; color: var(--warn); font-weight: 700; }
+
+  table.status-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  table.status-table th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  table.status-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  table.status-table tr:last-child td { border-bottom: none; }
+  table.status-table tr:hover td { background: var(--surface2); }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .badge.green { background: var(--accent-light); color: var(--accent); }
+  .badge.yellow { background: var(--warn-light); color: var(--warn); }
+  .badge.red { background: var(--red-light); color: var(--red); }
+
+  .drcop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 600px) { .drcop-grid { grid-template-columns: 1fr 1fr; } }
+
+  .drcop-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 14px;
+  }
+
+  .drcop-item .di-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .drcop-item .di-value { font-size: 14px; font-weight: 500; }
+  .drcop-item.ok { border-left: 3px solid var(--accent); }
+  .drcop-item.warn { border-left: 3px solid var(--gold); }
+
+  .callout {
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  .callout.green { background: var(--accent-light); border-left: 3px solid var(--accent); }
+  .callout.yellow { background: var(--warn-light); border-left: 3px solid var(--gold); }
+  .callout.red { background: var(--red-light); border-left: 3px solid var(--red); }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  table.rooms { font-size: 13px; }
+  table.rooms td:nth-child(3) { color: var(--text-muted); }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Полный анализ объекта недвижимости</div>
+    <h1>2341, Rue Marcel-Trudel<br>Longueuil</h1>
+    <div class="header-sub">Le Vieux-Longueuil (Parcours du Cerf), Montérégie · Кондоминиум, Jumelé, 2 этажа · MLS 12660877</div>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Цена продажи</span>
+        <span class="meta-value">539 000 $</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Муниц. оценка 2026</span>
+        <span class="meta-value">472 700 $</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Цена / Оценка</span>
+        <span class="meta-value">114 %</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Год постройки</span>
+        <span class="meta-value neutral">2015</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Взносы кондо</span>
+        <span class="meta-value neutral">150 $/мес</span>
+      </div>
+    </div>
+    <div class="rating-badge">9 / 10 <span>Личная оценка</span></div>
+  </div>
+
+  <!-- REVIEW -->
+  <div class="review-box">
+    « Отличное качество. Минус — немного места, нет подвала и места для хранения больших вещей. »
+  </div>
+
+  <!-- 1. FINANCIALS -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Финансы</div>
+    <div class="fin-grid">
+      <div class="fin-card">
+        <div class="label">Цена продажи</div>
+        <div class="value green">539 000 $</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Муниципальная оценка (2026)</div>
+        <div class="value neutral">472 700 $</div>
+        <div class="sub">Участок 117 300 $ + Здание 355 400 $</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Муниципальный налог (2026)</div>
+        <div class="value neutral">3 958 $/год</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Школьный налог (2025)</div>
+        <div class="value neutral">309 $/год</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Взносы кондо</div>
+        <div class="value neutral">1 800 $/год</div>
+        <div class="sub">150 $/мес · ✅ ниже порога 200 $/мес</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Цена vs оценка</div>
+        <div class="value green">114 %</div>
+        <div class="sub">Разумно для состояния turnkey с апгрейдами</div>
+      </div>
+    </div>
+    <div class="fin-total">
+      <div>
+        <div class="label">Итого расходов в год</div>
+        <div style="font-size:12px;opacity:0.6;margin-top:2px;">налоги + взносы кондо</div>
+      </div>
+      <div class="value">~6 067 $/год</div>
+    </div>
+  </div>
+
+  <!-- 2. PRO/CON -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> Преимущества и недостатки</div>
+    <div class="two-col">
+      <div class="procon-box">
+        <div class="procon-header pro">✓ Преимущества</div>
+        <ul class="procon-list pro-list">
+          <li>Постройка 2015 года — новейший дом в подборке, все системы современные</li>
+          <li>Новый настенный тепловой насос (2026) — отопление + кондиционирование</li>
+          <li>3 спальни на 2-м этаже — идеальная планировка</li>
+          <li>Clé en main — никаких работ, можно сразу въезжать</li>
+          <li>102 м² (1 094 кв. фут) — хорошая площадь для jumelé</li>
+          <li>Квартал Parcours du Cerf — тихий, семейный, рядом лес Boisé du Tremblay</li>
+          <li>Зарядная станция для электромобиля (частная, включена)</li>
+          <li>Потолки 9 фут, плавающие полы, большие окна</li>
+          <li>Благоустроенный двор + деревянный балкон + терраса</li>
+          <li>Взносы кондо 150 $/мес ✅ — ниже порога 200 $</li>
+          <li>Домашние животные разрешены</li>
+          <li>Резервный фонд 6 201 $ — внеплановых взносов не ожидается</li>
+          <li>Синдикат зарегистрирован, нет судов, ожидается профицит</li>
+        </ul>
+      </div>
+      <div class="procon-box">
+        <div class="procon-header con">− Недостатки</div>
+        <ul class="procon-list con-list">
+          <li>Нет подвала — очень ограниченное место для хранения</li>
+          <li>Нет гаража</li>
+          <li>Только 1 полная ванная комната (2-й этаж)</li>
+          <li>Высокий муниципальный налог — 3 958 $/год</li>
+          <li>Итого годовые расходы ~6 067 $ — выше среднего</li>
+          <li>Въезд через 90 дней (~сентябрь 2026)</li>
+          <li>Нет плана управления активами (Закон 16 — риск в будущем)</li>
+          <li>Скромный резервный фонд (~3 100 $ на юнит)</li>
+          <li>Скромный резервный фонд (~3 100 $ на юнит) — нет плана управления активами</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. SELLER DECLARATION -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Декларации продавца (DVD) — Ключевые пункты</div>
+
+    <table class="status-table" style="margin-bottom:16px;">
+      <thead>
+        <tr>
+          <th>Пункт</th>
+          <th>Декларация</th>
+          <th>Статус</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>D3.2</td>
+          <td>Утечка воды — трещина в сливной трубе под душем. Сантехник заменил трубу, установлен люк доступа. Больше не повторялось.</td>
+          <td><span class="badge yellow">Устранено — проверить</span></td>
+        </tr>
+        <tr>
+          <td>D11.1</td>
+          <td>Пауки — ежегодные профилактические обработки экстерминатором ✓. Весна 2026: мелкие муравьи-песчаники, расставлены ловушки, серьёзных проблем нет.</td>
+          <td><span class="badge yellow">Незначительно</span></td>
+        </tr>
+        <tr>
+          <td>D2.13</td>
+          <td>Ипотека TD — будет погашена при продаже. Сервитут (см. сертификат геодезиста).</td>
+          <td><span class="badge green">Норма</span></td>
+        </tr>
+        <tr>
+          <td>D2.6</td>
+          <td>Нет плана управления активами (изучение резервного фонда + журнал обслуживания).</td>
+          <td><span class="badge yellow">Под наблюдением</span></td>
+        </tr>
+        <tr>
+          <td>D3.1, D4–D6</td>
+          <td>Нет протечек, нет проблем с грунтом, фундамент бетонный, качество воздуха в норме, нет асбеста, нет плесени.</td>
+          <td><span class="badge green">Всё чисто</span></td>
+        </tr>
+        <tr>
+          <td>D8–D10</td>
+          <td>Водонагреватель 2024 г., тепловой насос 2026 г., рекуператор воздуха 2015 г., нет проблем с сантехникой и электрикой.</td>
+          <td><span class="badge green">Всё чисто</span></td>
+        </tr>
+        <tr>
+          <td>D13.3–D13.6</td>
+          <td>Нет отказов страховщиков, не было насильственной смерти, нет незаконных веществ.</td>
+          <td><span class="badge green">Всё чисто</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout yellow">
+      <strong>Проверить при инспекции (D3.2)</strong>
+      Попросить показать люк доступа под душем и убедиться в отсутствии следов сырости на потолке столовой.
+    </div>
+
+    <div style="margin-top:14px;">
+      <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Улучшения, сделанные владельцами (D13.2)</div>
+      <table class="status-table">
+        <thead><tr><th>Год</th><th>Работы</th></tr></thead>
+        <tbody>
+          <tr><td>2026</td><td>Установка нового настенного теплового насоса</td></tr>
+          <tr><td>2025</td><td>Полная покраска первого этажа + добавление двери в 3-ю спальню + кладовая-каморка на улице</td></tr>
+          <tr><td>2024</td><td>Замена водонагревателя</td></tr>
+          <tr><td>2023</td><td>Установка зарядной станции для электромобиля</td></tr>
+          <tr><td>2022</td><td>Установка системы охранной сигнализации</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. DRCOP -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Запрос сведений у синдиката (DRCOP)</div>
+
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+      Синдикат Copropriété Marcel-Trudel 5 587 764 / 5 587 767 · NEQ 1170495163 · Самоуправление (autogestion) · Ответ получен 4 июня 2026
+    </div>
+
+    <div class="drcop-grid">
+      <div class="drcop-item ok">
+        <div class="di-label">Взносы кондо</div>
+        <div class="di-value">Оплачены — 04.06.2026</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Задолженность по взносам</div>
+        <div class="di-value" style="color:var(--accent);">Нет ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Внеплановые котизации</div>
+        <div class="di-value" style="color:var(--accent);">Нет ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Дефицит бюджета</div>
+        <div class="di-value" style="color:var(--accent);">Нет ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Профицит на год</div>
+        <div class="di-value" style="color:var(--accent);">Ожидается ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Судебные процессы</div>
+        <div class="di-value" style="color:var(--accent);">Нет ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Судебные решения</div>
+        <div class="di-value" style="color:var(--accent);">Нет ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Страховой полис</div>
+        <div class="di-value" style="color:var(--accent);">Есть (L'Unique) ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Несанкционированные работы</div>
+        <div class="di-value" style="color:var(--accent);">Нет ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Синдикат зарегистрирован</div>
+        <div class="di-value" style="color:var(--accent);">Да ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Факторы обесценивания</div>
+        <div class="di-value" style="color:var(--accent);">Нет ✓</div>
+      </div>
+      <div class="drcop-item ok">
+        <div class="di-label">Покрытие здания (полис)</div>
+        <div class="di-value" style="color:var(--accent);">980 100 $ valeur à neuf ✓</div>
+      </div>
+    </div>
+
+    <div class="fin-card" style="display:inline-block;margin-bottom:16px;min-width:260px;">
+      <div class="label">Резервный фонд (4 июня 2026)</div>
+      <div class="value neutral" style="font-size:28px;">6 201,75 $</div>
+      <div class="sub">~3 100 $ на юнит · Здание молодое (2015), краткосрочный риск низкий</div>
+    </div>
+
+    <div class="callout yellow">
+      <strong>На заметку — Скромный резервный фонд</strong>
+      6 200 $ на двух владельцев. При отсутствии плана управления активами (Закон 16) нет формальной оценки будущих потребностей. В горизонте 5–10 лет кровля и общие элементы потребуют ремонта. Как совладелец, любое крупное решение принимается вдвоём.
+    </div>
+  </div>
+
+  <!-- 5. INSURANCE -->
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Страхование</div>
+
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+      Полис 017166061 · L'Unique assurances générales · Действует 14.11.2025 — 14.11.2026 · Брокер: Essor Assurances (St-Léonard)
+    </div>
+
+    <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Страхование синдиката (здание) — уже включено в взносы 150 $/мес</div>
+
+    <table class="status-table" style="margin-bottom:20px;">
+      <thead><tr><th>Покрытие</th><th>Сумма</th><th>Франшиза</th></tr></thead>
+      <tbody>
+        <tr><td>Здание — расширенная формула (valeur à neuf)</td><td>980 100 $</td><td>1 000 $</td></tr>
+        <tr><td>Гражданская ответственность — общий лимит</td><td>5 000 000 $</td><td>1 000 $</td></tr>
+        <tr><td>Ответственность за один страховой случай</td><td>2 000 000 $</td><td>1 000 $</td></tr>
+        <tr><td>Ответственность арендатора за помещение</td><td>500 000 $</td><td>1 000 $</td></tr>
+        <tr><td>Ответственность администраторов синдиката</td><td>1 000 000 $</td><td>1 000 $</td></tr>
+        <tr><td>Обратный слив канализации</td><td>50 000 $</td><td>2 500 $</td></tr>
+        <tr><td>Поломка оборудования (термопомпа, водонагреватель и др.)</td><td>включено</td><td>1 000 $</td></tr>
+        <tr><td>Фонд расходов синдиката (1 400 $/мес × 12)</td><td>16 800 $</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout green">
+      <strong>Покрытие адекватное — вопрос закрыт</strong>
+      Страховка действующая, здание застраховано по стоимости новой замены (valeur à neuf) на 980 100 $. Гражданская ответственность 5 000 000 $. Годовая премия синдиката 1 998 $ делится на 4 юнита — ~500 $/юнит в год, уже включено в твои взносы 150 $/мес.
+    </div>
+
+    <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin:16px 0 10px;">Личная страховка — нужно купить отдельно</div>
+
+    <div class="fin-grid" style="margin-bottom:0;">
+      <div class="fin-card">
+        <div class="label">Страховка синдиката (в взносах)</div>
+        <div class="value neutral">~500 $/год</div>
+        <div class="sub">~42 $/мес · уже включено в 150 $/мес</div>
+      </div>
+      <div class="fin-card">
+        <div class="label">Личная страховка собственника</div>
+        <div class="value neutral">400–700 $/год</div>
+        <div class="sub">Имущество + личная ответственность + franchise · выбрать отдельно</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ROOMS -->
+  <div class="section">
+    <div class="section-title"><span class="num">6</span> Размеры комнат</div>
+    <table class="status-table rooms">
+      <thead>
+        <tr><th>Комната</th><th>Этаж</th><th>Размеры</th><th>Покрытие</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Прихожая</td><td>1-й</td><td>1,9 × 1,7 м</td><td>—</td></tr>
+        <tr><td>Гостиная</td><td>1-й</td><td>3,7 × 3,5 м</td><td>Плавающий пол</td></tr>
+        <tr><td>Столовая</td><td>1-й</td><td>3,1 × 3,8 м</td><td>Плавающий пол</td></tr>
+        <tr><td>Кухня</td><td>1-й</td><td>3,1 × 3,4 м</td><td>—</td></tr>
+        <tr><td>Гостевой санузел</td><td>1-й</td><td>1,6 × 2,6 м</td><td>—</td></tr>
+        <tr><td>Кладовая / Хранение</td><td>1-й</td><td>2,3 × 2,0 м</td><td>—</td></tr>
+        <tr><td>Главная спальня</td><td>2-й</td><td>3,8 × 3,4 м</td><td>Плавающий пол</td></tr>
+        <tr><td>Гардеробная</td><td>2-й</td><td>1,8 × 2,5 м</td><td>—</td></tr>
+        <tr><td>Спальня 2</td><td>2-й</td><td>2,6 × 3,9 м</td><td>Плавающий пол</td></tr>
+        <tr><td>Спальня 3 / Кабинет</td><td>2-й</td><td>2,9 × 2,7 м</td><td>Плавающий пол</td></tr>
+        <tr><td>Ванная (полная)</td><td>2-й</td><td>2,6 × 2,5 м</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 7. OPEN QUESTIONS -->
+  <div class="section">
+    <div class="section-title"><span class="num">7</span> Открытые вопросы и действия перед предложением</div>
+    <table class="status-table">
+      <thead><tr><th>Вопрос</th><th>Статус</th><th>Примечание</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Что входит в 150 $/мес?</td>
+          <td><span class="badge green">Решено ✓</span></td>
+          <td>Уборка снега, покос газона, мытьё окон снаружи, страхование здания, резервный фонд</td>
+        </tr>
+        <tr>
+          <td>Юридическая гарантия?</td>
+          <td><span class="badge green">Решено ✓</span></td>
+          <td>Продажа с garantie légale (частные лица, не ликвидатор)</td>
+        </tr>
+        <tr>
+          <td>Тест на пирит?</td>
+          <td><span class="badge green">Не требуется ✓</span></td>
+          <td>Постройка 2015 г. — риск практически нулевой</td>
+        </tr>
+        <tr>
+          <td>Внеплановые взносы в будущем?</td>
+          <td><span class="badge green">Решено ✓</span></td>
+          <td>DRCOP п. 3.4 — Нет</td>
+        </tr>
+        <tr>
+          <td>Страховка здания — покрытие адекватное?</td>
+          <td><span class="badge green">Решено ✓</span></td>
+          <td>Полис 017166061 (L'Unique) действует до 14.11.2026 · Здание 980 100 $ valeur à neuf · Отв. 5 000 000 $</td>
+        </tr>
+        <tr>
+          <td>Проверить люк под душем (D3.2)</td>
+          <td><span class="badge yellow">При инспекции</span></td>
+          <td>Убедиться в отсутствии следов сырости на потолке столовой</td>
+        </tr>
+        <tr>
+          <td>Муравьи-песчаники (весна 2026)</td>
+          <td><span class="badge yellow">При инспекции</span></td>
+          <td>Осмотреть периметр здания, убедиться что ловушки установлены</td>
+        </tr>
+        <tr>
+          <td>Личная страховка собственника</td>
+          <td><span class="badge yellow">Оформить до въезда</span></td>
+          <td>Assurance habitation copropriétaire — 400–700 $/год (L'Unique, Intact, Belairdirect и др.)</td>
+        </tr>
+        <tr>
+          <td>План управления активами (Закон 16)</td>
+          <td><span class="badge yellow">Долгосрочно</span></td>
+          <td>Обсудить с совладельцем создание журнала обслуживания</td>
+        </tr>
+        <tr>
+          <td>Сервитут (D2.13)</td>
+          <td><span class="badge yellow">Проверить</span></td>
+          <td>Изучить сертификат геодезиста (certificat de localisation)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 8. CONCLUSION -->
+  <div class="section">
+    <div class="section-title"><span class="num">8</span> Итоговый вывод</div>
+    <div class="callout green">
+      <strong>Вердикт: 9/10 — Чистое дело, готово к предложению</strong>
+      Все четыре документа (карточка Centris, декларации продавца DVD, DRCOP, страховой полис) дают одну и ту же картину: ухоженный объект, честные и прозрачные декларации, здоровый синдикат без долгов и судов, адекватное страховое покрытие. Улучшения 2022–2026 годов существенные и задокументированные. Единственный структурный недостаток — отсутствие подвала и места для хранения — известен и принят.
+    </div>
+    <div class="callout yellow" style="margin-top:0;">
+      <strong>Перед подачей предложения</strong>
+      (1) Профессиональная инспекция — проверить люк под душем и потолок столовой.
+      (2) Изучить сертификат геодезиста на предмет сервитута (D2.13).
+      (3) Оформить личную страховку собственника (assurance habitation) до въезда — 400–700 $/год.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Анализ подготовлен на основе: Centris 12660877 · DVD (OACIQ, 26 мая 2026) · DRCOP 67560 (4 июня 2026) · Полис L'Unique 017166061 (14 нояб. 2025)</span>
+    <span>5 июня 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
