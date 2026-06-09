@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анализ — 1544 Rue Michel-Laguë, Chambly</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0; --surface: #ffffff; --surface2: #f0ede6; --border: #e0d9ce;
+    --text: #1a1714; --text-muted: #7a7168; --accent: #2c5f3a; --accent-light: #e8f0ea;
+    --warn: #8a4a00; --warn-light: #fdf3e7; --red: #7a2020; --red-light: #fdeaea;
+    --gold: #b08a2a; --gold-light: #fdf8ec;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; padding: 40px 20px 80px; }
+  .page { max-width: 860px; margin: 0 auto; }
+  .header { border-bottom: 2px solid var(--text); padding-bottom: 24px; margin-bottom: 36px; }
+  .header-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; line-height: 1.15; margin-bottom: 6px; }
+  .header-sub { color: var(--text-muted); font-size: 14px; }
+  .header-meta { display: flex; gap: 32px; margin-top: 20px; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+  .meta-value { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--accent); }
+  .meta-value.neutral { color: var(--text); font-size: 16px; }
+  .meta-value.warn { color: var(--warn); font-size: 16px; }
+  .rating-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #fff; padding: 6px 16px; border-radius: 2px; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-top: 20px; }
+  .rating-badge span { font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 400; opacity: 0.8; }
+  .rating-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+  .section { margin-bottom: 36px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section-title .num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: var(--text); color: #fff; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; border-radius: 50%; flex-shrink: 0; }
+  .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  @media (max-width: 520px) { .fin-grid { grid-template-columns: 1fr; } }
+  .fin-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 18px; border-radius: 4px; }
+  .fin-card.good-card { border-left: 3px solid var(--accent); }
+  .fin-card.warn-card { border-left: 3px solid var(--gold); }
+  .fin-card .label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .fin-card .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+  .fin-card .value.green { color: var(--accent); }
+  .fin-card .value.neutral { color: var(--text); font-size: 17px; }
+  .fin-card .value.warn { color: var(--warn); font-size: 17px; }
+  .fin-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .fin-total { background: var(--text); color: #fff; padding: 14px 18px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .fin-total .label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+  .fin-total .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+  .procon-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .procon-header { padding: 10px 16px; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
+  .procon-header.pro { background: var(--accent-light); color: var(--accent); }
+  .procon-header.con { background: var(--warn-light); color: var(--warn); }
+  .procon-list { list-style: none; padding: 12px 16px; }
+  .procon-list li { padding: 5px 0; font-size: 14px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
+  .procon-list li:last-child { border-bottom: none; }
+  .procon-list li::before { flex-shrink: 0; margin-top: 3px; font-size: 11px; }
+  .pro-list li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+  .con-list li::before { content: "−"; color: var(--warn); font-weight: 700; }
+  table.status-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.status-table th { text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 8px 12px; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  table.status-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.status-table tr:last-child td { border-bottom: none; }
+  table.status-table tr:hover td { background: var(--surface2); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 2px; font-size: 12px; font-weight: 500; }
+  .badge.green { background: var(--accent-light); color: var(--accent); }
+  .badge.yellow { background: var(--warn-light); color: var(--warn); }
+  .badge.red { background: var(--red-light); color: var(--red); }
+  .callout { border-radius: 4px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout.green { background: var(--accent-light); border-left: 3px solid var(--accent); }
+  .callout.yellow { background: var(--warn-light); border-left: 3px solid var(--gold); }
+  .callout.red { background: var(--red-light); border-left: 3px solid var(--red); }
+  .callout strong { display: block; margin-bottom: 4px; }
+  .footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Полный анализ объекта недвижимости</div>
+    <h1>1544, Rue Michel-Laguë<br>Chambly</h1>
+    <div class="header-sub">Montérégie · Двухэтажный, Attached (пристроенный), 3 уровня · MLS 19550696</div>
+    <div class="header-meta">
+      <div class="meta-item"><span class="meta-label">Цена продажи</span><span class="meta-value">549 500 $</span></div>
+      <div class="meta-item"><span class="meta-label">Муниц. оценка 2026</span><span class="meta-value neutral">432 300 $</span></div>
+      <div class="meta-item"><span class="meta-label">Цена / Оценка</span><span class="meta-value neutral">127 %</span></div>
+      <div class="meta-item"><span class="meta-label">Год постройки</span><span class="meta-value neutral">1994</span></div>
+      <div class="meta-item"><span class="meta-label">Налоги/год</span><span class="meta-value neutral">2 753 $ ✅</span></div>
+    </div>
+    <div class="rating-badge">4 / 10 <span>Пересмотренная оценка</span></div>
+    <div class="rating-note">⬆ Пересмотрено с 3/10 после анализа декларации продавца (DV 75975) и фиши: подтверждён тепловой насос (2024) и рекуператор воздуха, трещины фундамента отремонтированы фирмой (2024). Сдерживают оценку: продажа без юр. гарантии, требуется ремонт solive de rive (по отчёту инспекции), эмпьетман свеса крыши со стоком на соседний участок.</div>
+  </div>
+
+  <!-- 1. FINANCIALS -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Финансы</div>
+    <div class="fin-grid">
+      <div class="fin-card"><div class="label">Цена продажи</div><div class="value green">549 500 $</div></div>
+      <div class="fin-card"><div class="label">Муниципальная оценка (2026)</div><div class="value neutral">432 300 $</div><div class="sub">Участок 120 200 $ + Здание 312 100 $</div></div>
+      <div class="fin-card warn-card"><div class="label">Цена / оценка</div><div class="value warn">127 %</div><div class="sub">Выше оценки на 117 200 $</div></div>
+      <div class="fin-card good-card"><div class="label">Муниципальный налог (2026)</div><div class="value neutral">2 467 $/год</div><div class="sub">✅ Один из самых низких в подборке</div></div>
+      <div class="fin-card"><div class="label">Школьный налог (2025)</div><div class="value neutral">286 $/год</div></div>
+      <div class="fin-card good-card"><div class="label">Без кондо-взносов</div><div class="value neutral">0 $/мес</div><div class="sub">Свободное владение (freehold), не кондо</div></div>
+    </div>
+    <div class="fin-total">
+      <div><div class="label">Итого налоги в год</div><div style="font-size:12px;opacity:0.6;margin-top:2px;">муниципальный + школьный (электричество не указано)</div></div>
+      <div class="value">2 753 $/год</div>
+    </div>
+    <div class="callout warn" style="background:var(--warn-light);border-left:3px solid var(--gold);">
+      <strong>⚠ Цена 127 % от оценки</strong>
+      549 500 $ против муниципальной оценки 432 300 $. Надбавка умеренная для Chambly, но без юридической гарантии качества стоит подкрепить независимой инспекцией и, возможно, страхованием титула.
+    </div>
+  </div>
+
+  <!-- 2. PRO/CON -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> Преимущества и недостатки</div>
+    <div class="two-col">
+      <div class="procon-box">
+        <div class="procon-header pro">✓ Преимущества</div>
+        <ul class="procon-list pro-list">
+          <li>Настенный тепловой насос (2024) + рекуператор воздуха — современное отопление/вентиляция ✅</li>
+          <li>Трещины фундамента отремонтированы специализированной фирмой (2024) + установлена margelle</li>
+          <li>Свежие ремонты 2024–2025: ванная (2025), пол кухни (2024), фартук кухни (2025), 2 окна (2024), часть черепицы (2024)</li>
+          <li>Сертификат локализации свежий (2023) — не требует обновления</li>
+          <li>Водонагреватель не арендован</li>
+          <li>1994 г. — относительно новый фонд</li>
+          <li>10 комнат, 3 спальни (1 полная + 1 гостевой санузел)</li>
+          <li>Низкие налоги 2 753 $/год, без кондо-взносов</li>
+          <li>Хорошие включения: бассейн, тепловой насос, рекуператор, газебо</li>
+          <li>Chambly: Форт, канал, велодорожки; рядом трассы 10 и 30, сервисы</li>
+          <li>Быстрый въезд (30 дней)</li>
+        </ul>
+      </div>
+      <div class="procon-box">
+        <div class="procon-header con">− Недостатки и риски</div>
+        <ul class="procon-list con-list">
+          <li>⚠ Отчёт инспекции (D13.1): требуется ремонт балки solive de rive у заднего балкона — структурный пункт</li>
+          <li>⚠ Эмпьетман: свес крыши со стоком воды на соседний участок + апп. эмпьетман забора (сертификат 2023)</li>
+          <li>Продажа БЕЗ юридической гарантии качества</li>
+          <li>История трещин фундамента (отремонтированы 2024 — проверить при инспекции)</li>
+          <li>Лёгкая плесень в ванной на этаже — установлен вентилятор (D7.3)</li>
+          <li>Drain français — продавец «не знает» (D9.4)</li>
+          <li>Обратный клапан (clapet antiretour) — продавец «не знает» (D9.13)</li>
+          <li>Тест на пирит не проводился (1994 — риск ниже)</li>
+          <li>Attached (пристроенный), маленький участок 299 м², нет гаража</li>
+          <li>Владелец с 2024 г. — короткий срок владения</li>
+          <li>Chambly ~33 км от Монреаля — зависимость от авто</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. SELLER DECLARATION -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Декларация продавца (DV 75975, подписана 2026-05-15) — Ключевые пункты</div>
+    <table class="status-table">
+      <thead><tr><th>Пункт</th><th>Декларация</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>D2.1</td><td>Продавец (Anne Habermeyer) приобрёл недвижимость в 2024 г. — короткий срок владения.</td><td><span class="badge yellow">2024</span></td></tr>
+        <tr><td>D5.1 / D5.2</td><td>Фундамент — залитый бетон. Задекларированы трещины; <strong>3 трещины отремонтированы специализированной фирмой в 2024 г.</strong>, установлена margelle (D15 §5).</td><td><span class="badge yellow">Отремонтировано 2024</span></td></tr>
+        <tr><td>D7.3</td><td>«Лёгкая плесень в ванной комнате на этаже, но установлен адекватный вентилятор» (D15 §6).</td><td><span class="badge yellow">Незначительно</span></td></tr>
+        <tr><td>D4.2</td><td>Протечки в прошлом: наружный кран → подвал; посудомоечная машина (2020); раковина 2-го этажа. Всё устранено «по правилам искусства» (D15 §4).</td><td><span class="badge green">Устранено ✓</span></td></tr>
+        <tr><td>D12.12</td><td><strong>Тепловой насос настенный, установлен 2024</strong>, документы есть, проблем не было. (В исходном MD значилось только электроотопление — исправлено.)</td><td><span class="badge green">Есть ✓ (2024)</span></td></tr>
+        <tr><td>D12.14</td><td>Рекуператор воздуха (échangeur d'air) — установлен (год неизвестен).</td><td><span class="badge green">Есть ✓</span></td></tr>
+        <tr><td>D13.1</td><td><strong>Отчёт инспекции доступен.</strong> В числе пунктов — <strong>необходим ремонт балки solive de rive в районе заднего балкона.</strong></td><td><span class="badge red">⚠ Запросить отчёт</span></td></tr>
+        <tr><td>D13.2</td><td>Никаких иных экспертиз (пирит, радон, дренаж и т.д.) не проводилось.</td><td><span class="badge yellow">Нет тестов</span></td></tr>
+        <tr><td>D2.8</td><td>Ипотека TD; сервитуты Bell Canada и Hydro-Québec; <strong>апп. эмпьетман забора</strong> + <strong>эмпьетман свеса крыши со стоком воды на соседний участок</strong> (см. сертификат) (D15 §1).</td><td><span class="badge red">⚠ Юр. вопрос</span></td></tr>
+        <tr><td>D8.1 / D8.5</td><td>Кровля — асфальтовая черепица (часть заменена 2024). Утепление чердака — задувная вата.</td><td><span class="badge green">✓</span></td></tr>
+        <tr><td>D9.4</td><td>Наличие/доступность дренажа (drain français) — продавец «не знает».</td><td><span class="badge yellow">Неизвестно</span></td></tr>
+        <tr><td>D9.13</td><td>Обратный клапан (clapet antiretour) — «не знает».</td><td><span class="badge yellow">Неизвестно</span></td></tr>
+        <tr><td>D2.12–D2.14</td><td>Нет уведомлений о несоответствии; страховщик не отказывал в страховании и не отказывал в выплате.</td><td><span class="badge green">Чисто ✓</span></td></tr>
+        <tr><td>D14.1–D14.3</td><td>Нет ущерба от стихий/пожара; нет выращивания запрещённых веществ; нет насильственной смерти/суицида.</td><td><span class="badge green">Чисто ✓</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout red">
+      <strong>⚠ Отчёт инспекции (D13.1) — запросить до предложения</strong>
+      Продавец указывает наличие отчёта об инспекции, среди пунктов — необходимый ремонт балки <em>solive de rive</em> у заднего балкона. Это структурный элемент: запросить полный отчёт, оценить объём и стоимость ремонта.
+    </div>
+    <div class="callout yellow">
+      <strong>Трещины фундамента (D5.2) — отремонтированы, но проверить</strong>
+      Заявлено 3 ремонта трещин специализированной фирмой в 2024 г. + margelle. Запросить счета/гарантию подрядчика; при инспекции проверить состояние фундамента и наличие повторных трещин.
+    </div>
+  </div>
+
+  <!-- 4. CERTIFICATE OF LOCATION -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Сертификат локализации (2023)</div>
+    <table class="status-table">
+      <thead><tr><th>Пункт</th><th>Результат</th></tr></thead>
+      <tbody>
+        <tr><td>Дата сертификата</td><td>2023 г. — свежий (покупатель должен принять текущий сертификат; новый — за счёт покупателя)</td></tr>
+        <tr><td>Эмпьетман — забор</td><td><span class="badge yellow">Видимый эмпьетман ⚠</span> — заборы по периметру (D2.8/D15)</td></tr>
+        <tr><td>Эмпьетман — свес крыши</td><td><span class="badge red">Свес крыши + сток воды на соседний участок ⚠</span> — уточнить юридические последствия у нотариуса</td></tr>
+        <tr><td>Сервитуды</td><td>Hydro-Québec + Bell Canada — стандартные коммунальные сервитуды</td></tr>
+        <tr><td>Патио бассейна</td><td>Перемещено примерно на ширину одной панели бассейна; продавец заявляет, что это единственное изменение относительно сертификата 2023</td></tr>
+      </tbody>
+    </table>
+    <div class="callout yellow" style="margin-top:12px;">
+      <strong>Примечание</strong>
+      Сертификат — скан-изображение (без текстового слоя); имя геодезиста и № минуты не извлечены автоматически. Данные об эмпьетманах взяты из декларации продавца (D15) и фиши брокера. При финансировании уточнить у нотариуса достаточность сертификата 2023 г.
+    </div>
+  </div>
+
+  <!-- 5. IMPROVEMENTS -->
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Улучшения и состояние систем</div>
+    <table class="status-table">
+      <thead><tr><th>Год</th><th>Работы</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>2025</td><td>Ванная комната на этаже; фартук кухни (dosseret)</td><td><span class="badge green">Сделано ✓</span></td></tr>
+        <tr><td>2024</td><td>Настенный тепловой насос · ремонт 3 трещин фундамента + margelle · 2 окна · пол кухни · частичный ремонт черепицы</td><td><span class="badge green">Много ✓</span></td></tr>
+        <tr><td>2020</td><td>Забор (по прежней декларации DV77201); устранена протечка посудомоечной машины</td><td><span class="badge green">✓</span></td></tr>
+        <tr><td>2013</td><td>Добавлен надземный бассейн</td><td><span class="badge green">✓</span></td></tr>
+        <tr><td>—</td><td>Рекуператор воздуха (échangeur d'air) — год неизвестен</td><td><span class="badge yellow">Год?</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. ROOMS -->
+  <div class="section">
+    <div class="section-title"><span class="num">6</span> Размеры комнат</div>
+    <table class="status-table">
+      <thead><tr><th>Комната</th><th>Этаж</th><th>Размеры</th><th>Покрытие</th></tr></thead>
+      <tbody>
+        <tr><td>Прихожая</td><td>Главный</td><td>1,8 × 1,1 м</td><td>Керамика</td></tr>
+        <tr><td>Кухня</td><td>Главный</td><td>2,9 × 3,6 м</td><td>Керамика</td></tr>
+        <tr><td>Гостиная</td><td>Главный</td><td>4,3 × 3,7 м</td><td>Ламинат</td></tr>
+        <tr><td>Столовая</td><td>Главный</td><td>2,4 × 3,3 м</td><td>Керамика</td></tr>
+        <tr><td>Гостевой санузел</td><td>Главный</td><td>1,6 × 2,3 м</td><td>Керамика</td></tr>
+        <tr><td>Главная спальня</td><td>2-й</td><td>5,2 × 3,8 м</td><td>Паркет</td></tr>
+        <tr><td>Спальня 2</td><td>2-й</td><td>3,9 × 3,5 м</td><td>Паркет</td></tr>
+        <tr><td>Ванная комната (полная)</td><td>2-й</td><td>2,2 × 2,5 м</td><td>Керамика</td></tr>
+        <tr><td>Семейная комната</td><td>Подвал</td><td>5,9 × 2,9 м</td><td>Ламинат</td></tr>
+        <tr><td>Спальня 3</td><td>Подвал</td><td>3,4 × 3,2 м</td><td>Ламинат</td></tr>
+        <tr><td>Кладовая</td><td>Подвал</td><td>1,8 × 3,5 м</td><td>Бетон</td></tr>
+      </tbody>
+    </table>
+    <div class="rating-note">Размеры конвертированы из футов-дюймов (фиша брокера) в метры. Жилая площадь в м² в документах не указана.</div>
+  </div>
+
+  <!-- 7. OPEN QUESTIONS -->
+  <div class="section">
+    <div class="section-title"><span class="num">7</span> Открытые вопросы и действия перед предложением</div>
+    <table class="status-table">
+      <thead><tr><th>Вопрос</th><th>Статус</th><th>Примечание</th></tr></thead>
+      <tbody>
+        <tr><td>Отчёт инспекции (D13.1)</td><td><span class="badge red">Критично</span></td><td>Запросить полный отчёт; ремонт solive de rive у заднего балкона — оценить объём и стоимость</td></tr>
+        <tr><td>Эмпьетман свеса крыши (сток воды на соседний участок)</td><td><span class="badge red">Критично</span></td><td>Уточнить юридические последствия и риски претензий соседа у нотариуса</td></tr>
+        <tr><td>Юридическая гарантия</td><td><span class="badge red">Исключена</span></td><td>Продажа без гарантии качества — обязательна независимая инспекция; рассмотреть страхование титула</td></tr>
+        <tr><td>Трещины фундамента</td><td><span class="badge yellow">Проверить</span></td><td>Запросить счета/гарантию по ремонту 2024; осмотр при инспекции</td></tr>
+        <tr><td>Drain français (D9.4)</td><td><span class="badge yellow">Неизвестно</span></td><td>Продавец «не знает» — проверить при инспекции</td></tr>
+        <tr><td>Обратный клапан (D9.13)</td><td><span class="badge yellow">Неизвестно</span></td><td>Уточнить наличие/состояние</td></tr>
+        <tr><td>Плесень в ванной на этаже (D7.3)</td><td><span class="badge yellow">При инспекции</span></td><td>Вентилятор установлен — проверить отсутствие повторов</td></tr>
+        <tr><td>Тест на пирит</td><td><span class="badge yellow">Не проводился</span></td><td>1994 — риск ниже; Chambly в зоне умеренного риска. Рассмотреть тест</td></tr>
+        <tr><td>Жилая площадь (м²)</td><td><span class="badge yellow">Уточнить</span></td><td>В документах не указана</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 8. CONCLUSION -->
+  <div class="section">
+    <div class="section-title"><span class="num">8</span> Итоговый вывод</div>
+    <div class="callout yellow">
+      <strong>Вердикт: 4/10 — Лучше, чем казалось по карточке, но есть структурный и юридический риск</strong>
+      Документы существенно прояснили объект. Положительно: подтверждён настенный тепловой насос (2024) и рекуператор воздуха (исходный MD ошибочно указывал только электроотопление), трещины фундамента отремонтированы специализированной фирмой в 2024 г., свежие ремонты 2024–2025, актуальный сертификат локализации (2023), водонагреватель не арендован. Это поднимает оценку с 3 до 4/10. Сдерживают: продажа без юридической гарантии, требуемый ремонт балки solive de rive (по отчёту инспекции), эмпьетман свеса крыши со стоком воды на соседний участок, только 1 полная ванная и пристроенный тип.
+    </div>
+    <div class="callout red" style="margin-top:0;">
+      <strong>Перед подачей предложения — обязательно</strong>
+      (1) Запросить полный отчёт инспекции и оценить ремонт solive de rive. (2) Уточнить у нотариуса юридические последствия эмпьетмана свеса крыши/стока воды на соседний участок. (3) Запросить счета и гарантию по ремонту трещин фундамента (2024). (4) Независимая инспекция (продажа без гарантии) с акцентом на фундамент, дренаж, балкон, кровлю. (5) Рассмотреть страхование титула.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Анализ на основе: Centris 19550696 · Декларация продавца DV 75975 (OACIQ, 2026-05-15) · Фиша брокера (RE/MAX du Cartier) · Сертификат локализации (2023) · MD-файл покупателя</span>
+    <span>9 июня 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
