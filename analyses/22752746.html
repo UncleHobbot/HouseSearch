@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анализ — 1115 Boul. Roberval Est, Longueuil</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0; --surface: #ffffff; --surface2: #f0ede6; --border: #e0d9ce;
+    --text: #1a1714; --text-muted: #7a7168; --accent: #2c5f3a; --accent-light: #e8f0ea;
+    --warn: #8a4a00; --warn-light: #fdf3e7; --red: #7a2020; --red-light: #fdeaea;
+    --gold: #b08a2a; --gold-light: #fdf8ec;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; padding: 40px 20px 80px; }
+  .page { max-width: 860px; margin: 0 auto; }
+  .header { border-bottom: 2px solid var(--text); padding-bottom: 24px; margin-bottom: 36px; }
+  .header-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; line-height: 1.15; margin-bottom: 6px; }
+  .header-sub { color: var(--text-muted); font-size: 14px; }
+  .header-meta { display: flex; gap: 32px; margin-top: 20px; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+  .meta-value { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--accent); }
+  .meta-value.neutral { color: var(--text); font-size: 16px; }
+  .meta-value.warn { color: var(--warn); font-size: 16px; }
+  .rating-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #fff; padding: 6px 16px; border-radius: 2px; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-top: 20px; }
+  .rating-badge span { font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 400; opacity: 0.8; }
+  .rating-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+  .section { margin-bottom: 36px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section-title .num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: var(--text); color: #fff; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; border-radius: 50%; flex-shrink: 0; }
+  .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  @media (max-width: 520px) { .fin-grid { grid-template-columns: 1fr; } }
+  .fin-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 18px; border-radius: 4px; }
+  .fin-card.good-card { border-left: 3px solid var(--accent); }
+  .fin-card.warn-card { border-left: 3px solid var(--gold); }
+  .fin-card .label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .fin-card .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+  .fin-card .value.green { color: var(--accent); }
+  .fin-card .value.neutral { color: var(--text); font-size: 17px; }
+  .fin-card .value.warn { color: var(--warn); font-size: 17px; }
+  .fin-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .fin-total { background: var(--text); color: #fff; padding: 14px 18px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .fin-total .label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+  .fin-total .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+  .procon-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .procon-header { padding: 10px 16px; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
+  .procon-header.pro { background: var(--accent-light); color: var(--accent); }
+  .procon-header.con { background: var(--warn-light); color: var(--warn); }
+  .procon-list { list-style: none; padding: 12px 16px; }
+  .procon-list li { padding: 5px 0; font-size: 14px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
+  .procon-list li:last-child { border-bottom: none; }
+  .procon-list li::before { flex-shrink: 0; margin-top: 3px; font-size: 11px; }
+  .pro-list li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+  .con-list li::before { content: "−"; color: var(--warn); font-weight: 700; }
+  table.status-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.status-table th { text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 8px 12px; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  table.status-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.status-table tr:last-child td { border-bottom: none; }
+  table.status-table tr:hover td { background: var(--surface2); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 2px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .badge.green { background: var(--accent-light); color: var(--accent); }
+  .badge.yellow { background: var(--warn-light); color: var(--warn); }
+  .badge.red { background: var(--red-light); color: var(--red); }
+  .callout { border-radius: 4px; padding: 16px 20px; margin: 16px 0; font-size: 14px; }
+  .callout.green { background: var(--accent-light); border-left: 3px solid var(--accent); }
+  .callout.yellow { background: var(--warn-light); border-left: 3px solid var(--gold); }
+  .callout.red { background: var(--red-light); border-left: 3px solid var(--red); }
+  .callout strong { display: block; margin-bottom: 4px; }
+  .pyrite-box { background: var(--accent-light); border: 1px solid var(--accent); border-radius: 4px; padding: 16px 20px; margin-bottom: 16px; }
+  .pyrite-box.warn-box { background: var(--warn-light); border-color: var(--gold); }
+  .pyrite-box.red-box { background: var(--red-light); border-color: var(--red); }
+  .pyrite-box .pyrite-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+  .pyrite-result { display: flex; align-items: center; gap: 16px; }
+  .pyrite-score { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; color: var(--accent); }
+  .pyrite-detail { font-size: 13px; color: var(--text-muted); }
+  .footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ HEADER ============ -->
+  <div class="header">
+    <div class="header-label">Полный анализ объекта недвижимости</div>
+    <h1>1115 Boul. Roberval Est<br>Longueuil (Le Vieux-Longueuil)</h1>
+    <div class="header-sub">Montérégie · Дом в совладении (semi-detached) · MLS 22752746</div>
+    <div class="header-meta">
+      <div class="meta-item"><span class="meta-label">Цена продажи</span><span class="meta-value">519 900 $</span></div>
+      <div class="meta-item"><span class="meta-label">Муниц. оценка</span><span class="meta-value neutral">431 600 $</span></div>
+      <div class="meta-item"><span class="meta-label">Цена / Оценка</span><span class="meta-value neutral">120 %</span></div>
+      <div class="meta-item"><span class="meta-label">Год постройки</span><span class="meta-value warn">1997</span></div>
+      <div class="meta-item"><span class="meta-label">Общие расходы</span><span class="meta-value neutral">116 $/мес</span></div>
+    </div>
+    <div class="rating-badge">7 / 10 <span>Пересмотренная оценка</span></div>
+    <div class="rating-note">⬆ Повышено с 5 до 7/10 после изучения документов: подтверждён тепловой насос 2022, продажа С юридической гарантией, пирит чист (IPPG 2), жилая площадь реально ~100 м² (а не 49), множество свежих реноваций. Сдерживают разводка Poly-B, бывший засор от ливня и кровля 2010 г.</div>
+  </div>
+
+  <!-- ============ 1. ФИНАНСЫ ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">1</span> Финансы</div>
+    <div class="fin-grid">
+      <div class="fin-card"><div class="label">Цена продажи</div><div class="value green">519 900 $</div></div>
+      <div class="fin-card"><div class="label">Муниципальная оценка (2026)</div><div class="value neutral">431 600 $</div><div class="sub">Участок 100 400 $ · Строение 331 200 $ · Цена/оценка 120 %</div></div>
+      <div class="fin-card"><div class="label">Муниципальный налог (2026)</div><div class="value neutral">3 251 $/год</div></div>
+      <div class="fin-card"><div class="label">Школьный налог (2025)</div><div class="value neutral">200 $/год</div></div>
+      <div class="fin-card good-card"><div class="label">Взносы кондо</div><div class="value neutral">1 392 $/год</div><div class="sub">116,34 $/мес — ниже порога 200 $/мес ✓</div></div>
+      <div class="fin-card"><div class="label">Электричество</div><div class="value neutral">1 476 $/год</div></div>
+    </div>
+    <div class="fin-total">
+      <div><div class="label">Итого расходов в год</div><div style="font-size:12px;opacity:0.6;margin-top:2px;">налоги + кондо + электричество</div></div>
+      <div class="value">6 319 $/год</div>
+    </div>
+    <div class="callout yellow">
+      <strong>Низкие взносы — но с оговоркой</strong>
+      Общие взносы (116 $/мес) покрывают <em>только страховку здания</em>. В этом проекте каждый собственник сам отвечает за обслуживание и ремонт своих окон, дверей, асфальта, кровли и закреплённого двора. Поэтому будущие капитальные расходы (кровля, окна) лягут на покупателя напрямую, а не на синдикат.
+    </div>
+  </div>
+
+  <!-- ============ 2. ПРЕИМУЩЕСТВА И НЕДОСТАТКИ ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">2</span> Преимущества и недостатки</div>
+    <div class="two-col">
+      <div class="procon-box">
+        <div class="procon-header pro">✓ Преимущества</div>
+        <ul class="procon-list pro-list">
+          <li>Тепловой насос на 3 головы (настенный, 2022) — отопление + кондиционер</li>
+          <li>Продажа С юридической гарантией качества (DVD-05604)</li>
+          <li>Пирит: тест проведён, IPPG 2 — чисто ✓</li>
+          <li>~100 м² жилой (1 073 sq ft) — адекватно для совладения</li>
+          <li>Свежие реновации: ванная 2021, эпокси-пол гаража 2020, двор 2019–2020, утепление чердака 2022</li>
+          <li>Встроенный отапливаемый гараж + дорожка на 2 авто</li>
+          <li>1 полная ванная + гостевой санузел ✓; каждая спальня с walk-in</li>
+          <li>Взносы кондо 116 $/мес — ниже порога 200 $ ✓</li>
+          <li>Le Vieux-Longueuil: школа Vauclin, парк Michel-Chartrand, boisé Tremblay, велодорожка, поезд</li>
+          <li>Нет соседей сзади; ухоженная терраса с перголой</li>
+        </ul>
+      </div>
+      <div class="procon-box">
+        <div class="procon-header con">− Недостатки и риски</div>
+        <ul class="procon-list con-list">
+          <li>Сантехника Poly-B во всех единицах — материал снят с применения (латентный риск)</li>
+          <li>Был засор/затопление от ливня — урегулировано, установлен обратный клапан</li>
+          <li>Разгерметизированные стеклопакеты (передняя спальня и др.)</li>
+          <li>Кровля 2010 г. (~16 лет, середина срока)</li>
+          <li>Самоуправление: кровля/окна/двор — за счёт собственника, не синдиката</li>
+          <li>Лёгкое посягательство забора по ЮЗ-границе (на lot 1 924 660)</li>
+          <li>Только 1 полная ванная; 2 спальни над землёй</li>
+          <li>Водонагреватель арендован (16,67 $/мес)</li>
+          <li>Цена 120 % от оценки</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 3. ДЕКЛАРАЦИЯ ПРОДАВЦА ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">3</span> Декларация продавца (DVD-05604) — Ключевые пункты</div>
+    <table class="status-table">
+      <thead><tr><th>Пункт</th><th>Декларация</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>D2.13</td><td>Есть посягательство (empiètement): забор по ЮЗ-границе частично на lot 1 924 660</td><td><span class="badge yellow">Уточнить</span></td></tr>
+        <tr><td>D3.1 / D15</td><td>У прежнего владельца был засор при ливне → урегулировано страховкой, добавлен обратный клапан (clapet anti-retour)</td><td><span class="badge green">Урегулировано</span></td></tr>
+        <tr><td>D6.1</td><td>Разгерметизированные стеклопакеты (термос), в т.ч. передняя спальня</td><td><span class="badge yellow">К ремонту</span></td></tr>
+        <tr><td>D7.1 / D15</td><td>Кровельное покрытие заменено в 2010 (проверяется каждые 2 года)</td><td><span class="badge yellow">Возраст ~16 лет</span></td></tr>
+        <tr><td>D7.6</td><td>2022: задувная вата на чердак + противоплесневая обработка (счёт доступен)</td><td><span class="badge green">ОК</span></td></tr>
+        <tr><td>D8.6</td><td>Водонагреватель 2018, арендован 16,67 $/мес (по Hydro Solution исправен ~15 лет)</td><td><span class="badge yellow">Аренда</span></td></tr>
+        <tr><td>D8 / D15</td><td>Разводка Poly-B во всех единицах; в ванной заменена на современную норму (2021)</td><td><span class="badge yellow">Латентный риск</span></td></tr>
+        <tr><td>D10.9</td><td>Тепловой насос настенный, 3 головы, установлен 2022</td><td><span class="badge green">ОК</span></td></tr>
+        <tr><td>D12.1</td><td>Объект инспектировался, отчёты доступны</td><td><span class="badge green">ОК</span></td></tr>
+        <tr><td>D12.2</td><td>Тест на пирит проведён — IPPG 2</td><td><span class="badge green">Чисто</span></td></tr>
+        <tr><td>D13.3/4</td><td>Отказов страховщика в страховании/возмещении не было</td><td><span class="badge green">Нет</span></td></tr>
+        <tr><td>D14.10</td><td>Специальных взносов синдиката нет и не предвидится</td><td><span class="badge green">Нет</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout yellow">
+      <strong>Главное из декларации</strong>
+      Серьёзных дисквалифицирующих факторов нет. Внимания требуют: разводка Poly-B (вне отремонтированной ванной), бывший засор от ливня (но обратный клапан установлен), разгерметизированные стеклопакеты и посягательство забора по ЮЗ-границе.
+    </div>
+  </div>
+
+  <!-- ============ 4. ТЕСТ НА ПИРИТ ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">4</span> Тест на пирит — Результат</div>
+    <div class="pyrite-box">
+      <div class="pyrite-title">Тест на пирит (результаты заявлены в декларации продавца, D12.2)</div>
+      <div class="pyrite-result">
+        <div class="pyrite-score">IPPG = 2</div>
+        <div><div style="font-weight:600;color:var(--accent);margin-bottom:4px;">Ничтожный потенциал вспучивания — чисто ✓</div>
+        <div class="pyrite-detail">IPPG ≤ 10 трактуется как незначительный риск. Значение 2 — фактически отсутствие проблемы с пиритом. PDF-отчёт в папке — скан (текст не извлекается); проверить дату/лабораторию по самому документу.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 5. СОВЛАДЕНИЕ ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">5</span> Совладение — Декларация / Управление / Фонд</div>
+    <table class="status-table">
+      <thead><tr><th>Пункт</th><th>Данные</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>Управление</td><td>Самоуправление (autogestion), Sylvie Martel</td><td><span class="badge yellow">Самоуправление</span></td></tr>
+        <tr><td>Синдикаты / единицы</td><td>1 синдикат; ~19 единиц</td><td><span class="badge green">ОК</span></td></tr>
+        <tr><td>Декларация совладения</td><td>Да, 1997 (издана 1997-05-26)</td><td><span class="badge green">Есть</span></td></tr>
+        <tr><td>Месячные взносы</td><td>116,34 $/мес — покрывают только страховку здания</td><td><span class="badge green">Низкие</span></td></tr>
+        <tr><td>Зона ответственности</td><td>Окна, двери, асфальт, кровля, закреплённый двор — за счёт собственника</td><td><span class="badge yellow">Личная</span></td></tr>
+        <tr><td>Фин. отчёты</td><td>Да, 2023</td><td><span class="badge green">Есть</span></td></tr>
+        <tr><td>Спец. взносы</td><td>Нет (Special Contribution: No)</td><td><span class="badge green">Нет</span></td></tr>
+        <tr><td>Страхование здания</td><td>La Personnelle</td><td><span class="badge green">Есть</span></td></tr>
+        <tr><td>Фонд непредвиденных расходов (étude)</td><td>Не подтверждён в документах</td><td><span class="badge yellow">Уточнить</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ 6. УЛУЧШЕНИЯ И СОСТОЯНИЕ СИСТЕМ ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">6</span> Улучшения и состояние систем</div>
+    <table class="status-table">
+      <thead><tr><th>Год</th><th>Работы</th><th>Статус</th></tr></thead>
+      <tbody>
+        <tr><td>2022</td><td>Тепловой насос 3 головы (настенный)</td><td><span class="badge green">Современно</span></td></tr>
+        <tr><td>2022</td><td>Задувная вата на чердак + противоплесневая обработка</td><td><span class="badge green">ОК</span></td></tr>
+        <tr><td>2021</td><td>Полный ремонт ванной (сантехника по современной норме)</td><td><span class="badge green">ОК</span></td></tr>
+        <tr><td>2020</td><td>Эпоксидный пол гаража + внутренняя отделка</td><td><span class="badge green">ОК</span></td></tr>
+        <tr><td>2019–2020</td><td>Двор: терраса, навес от солнца, стена приватности, кабанон</td><td><span class="badge green">ОК</span></td></tr>
+        <tr><td>2018</td><td>Водонагреватель (арендован)</td><td><span class="badge yellow">Аренда</span></td></tr>
+        <tr><td>2010</td><td>Кровельное покрытие (асфальтовая черепица)</td><td><span class="badge yellow">~16 лет</span></td></tr>
+        <tr><td>—</td><td>Разводка Poly-B (кроме отремонтированной ванной)</td><td><span class="badge yellow">Латентный риск</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ 7. РАЗМЕРЫ КОМНАТ ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">7</span> Размеры комнат</div>
+    <table class="status-table">
+      <thead><tr><th>Комната</th><th>Этаж</th><th>Размеры</th><th>Покрытие</th></tr></thead>
+      <tbody>
+        <tr><td>Холл</td><td>1 этаж</td><td>1,4 × 1,4 м</td><td>Керамика</td></tr>
+        <tr><td>Гостиная</td><td>1 этаж</td><td>4,4 × 3,5 м (irr)</td><td>Дерево</td></tr>
+        <tr><td>Столовая</td><td>1 этаж</td><td>3,8 × 2,7 м (irr)</td><td>Дерево</td></tr>
+        <tr><td>Кухня</td><td>1 этаж</td><td>3,0 × 2,6 м (irr)</td><td>Керамика</td></tr>
+        <tr><td>Гостевой санузел</td><td>1 этаж</td><td>1,8 × 1,4 м (irr)</td><td>Керамика</td></tr>
+        <tr><td>Главная спальня</td><td>2 этаж</td><td>4,1 × 3,4 м (irr)</td><td>Паркет</td></tr>
+        <tr><td>Спальня</td><td>2 этаж</td><td>3,6 × 2,8 м</td><td>Паркет</td></tr>
+        <tr><td>Ванная</td><td>2 этаж</td><td>3,5 × 2,7 м (irr)</td><td>Керамика</td></tr>
+        <tr><td>Спальня / кабинет</td><td>Подвал</td><td>4,0 × 1,8 м (irr)</td><td>Гибкое покрытие</td></tr>
+        <tr><td>Гараж</td><td>—</td><td>5,6 × … м (irr)</td><td>Эпокси</td></tr>
+      </tbody>
+    </table>
+    <div class="rating-note">Конвертировано из футов-дюймов (1 фут = 0,3048 м, 1 дюйм = 0,0254 м); irr — неправильная форма. Приватная часть 1 073 sq ft ≈ 100 м².</div>
+  </div>
+
+  <!-- ============ 8. ОТКРЫТЫЕ ВОПРОСЫ ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">8</span> Открытые вопросы и действия перед предложением</div>
+    <table class="status-table">
+      <thead><tr><th>Вопрос</th><th>Статус</th><th>Примечание</th></tr></thead>
+      <tbody>
+        <tr><td>Сертификат геодезиста: дата съёмки, сервитуты, точные границы</td><td><span class="badge yellow">Уточнить</span></td><td>PDF — скан, текст не извлекается; запросить читаемую копию</td></tr>
+        <tr><td>Состояние фонда непредвиденных расходов (étude)</td><td><span class="badge yellow">Уточнить</span></td><td>Самоуправление — проверить накопления синдиката</td></tr>
+        <tr><td>План замены стеклопакетов</td><td><span class="badge yellow">Уточнить</span></td><td>D6.1 — разгерметизация, в т.ч. передняя спальня</td></tr>
+        <tr><td>Возраст и план замены Poly-B вне ванной</td><td><span class="badge yellow">Уточнить</span></td><td>Латентный риск; учесть при инспекции</td></tr>
+        <tr><td>Кровля 2010 г. — остаточный срок</td><td><span class="badge yellow">Инспекция</span></td><td>~16 лет; оценить при осмотре</td></tr>
+        <tr><td>Посягательство забора по ЮЗ-границе</td><td><span class="badge yellow">Юрист</span></td><td>Уточнить у нотариуса риски и оформление</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ 9. ИТОГОВЫЙ ВЫВОД ============ -->
+  <div class="section">
+    <div class="section-title"><span class="num">9</span> Итоговый вывод</div>
+    <div class="callout green">
+      <strong>Вердикт: 7/10 — Крепкий, ухоженный объект с современным отоплением</strong>
+      Документы подтвердили хорошее состояние: тепловой насос 2022, ремонт ванной 2021, утепление чердака 2022, чистый пирит (IPPG 2) и продажа С юридической гарантией. Жилая площадь реально ~100 м² (фиша 1 073 sq ft), а не 49 м², как было в черновике. Низкие взносы кондо (116 $/мес) и встроенный гараж — плюсы для покупателя-пары на удалёнке. Сдерживают оценку латентный риск Poly-B, бывший засор от ливня (хоть и с обратным клапаном), разгерметизированные стеклопакеты, кровля 2010 г. и модель самоуправления, перекладывающая капремонт на собственника.
+    </div>
+    <div class="callout red" style="margin-top:0;">
+      <strong>Перед подачей предложения — обязательно</strong>
+      Профессиональная инспекция с акцентом на разводку Poly-B и кровлю 2010 г.; запросить читаемый сертификат геодезиста и прояснить посягательство забора у нотариуса; проверить фонд непредвиденных расходов синдиката; уточнить план замены стеклопакетов; учесть аренду водонагревателя в расчётах.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Источники: Декларация продавца DVD-05604 (2026-06-05), Client Detailed Sheet (Centris 22752746), Сертификат геодезиста (скан), Декларация совладения (скан), Тест на пирит (скан, IPPG 2)</span>
+    <span>2026-06-09</span>
+  </div>
+
+</div>
+</body>
+</html>
